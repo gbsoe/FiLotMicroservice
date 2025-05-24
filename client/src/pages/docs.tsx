@@ -243,6 +243,222 @@ getSwapQuote(
   1000000000 // 1 SOL
 );`
     }
+  },
+  {
+    id: "tokens",
+    method: "GET",
+    path: "/api/tokens",
+    title: "Get All Tokens",
+    description: "Retrieve all available tokens with metadata and market data",
+    response: `{
+  "tokens": [
+    {
+      "id": 1,
+      "symbol": "SOL",
+      "name": "Solana",
+      "mint": "So11111111111111111111111111111111111111112",
+      "decimals": 9,
+      "logoUri": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
+      "price": 95.25,
+      "marketCap": 45000000000,
+      "volume24h": 1500000000
+    }
+  ],
+  "count": 2,
+  "updated": "2025-05-24T01:22:32.986Z"
+}`,
+    examples: {
+      curl: "curl -X GET https://your-domain.com/api/tokens",
+      javascript: `const response = await fetch('/api/tokens');
+const data = await response.json();
+
+// Find high-value tokens
+const highValueTokens = data.tokens.filter(token => token.price > 50);
+console.log('Found ' + highValueTokens.length + ' high-value tokens');`,
+      python: `import requests
+
+response = requests.get('https://your-domain.com/api/tokens')
+data = response.json()
+
+# Filter tokens by market cap
+large_cap_tokens = [
+    token for token in data['tokens'] 
+    if token['marketCap'] > 10000000000  # $10B+ market cap
+]
+
+print("Large cap tokens:", len(large_cap_tokens))`,
+      nodejs: `const axios = require('axios');
+
+const getTokens = async () => {
+  try {
+    const response = await axios.get('https://your-domain.com/api/tokens');
+    const tokens = response.data.tokens;
+    
+    // Sort by market cap
+    const sortedTokens = tokens.sort((a, b) => b.marketCap - a.marketCap);
+    
+    console.log('Top tokens by market cap:');
+    sortedTokens.forEach((token, index) => {
+      console.log((index + 1) + '. ' + token.symbol + ': $' + token.marketCap.toLocaleString());
+    });
+    
+    return sortedTokens;
+  } catch (error) {
+    console.error('Failed to fetch tokens:', error);
+  }
+};
+
+getTokens();`
+    }
+  },
+  {
+    id: "token-parse",
+    method: "POST",
+    path: "/api/token-account/parse",
+    title: "Parse Token Account",
+    description: "Parse token account data to extract balance and metadata",
+    requestBody: `{
+  "accountData": "base64-encoded-account-data",
+  "owner": "11111111111111111111111111111112"
+}`,
+    response: `{
+  "mint": "So11111111111111111111111111111111111111112",
+  "owner": "11111111111111111111111111111112",
+  "amount": "1000000000",
+  "decimals": 9,
+  "uiAmount": 1.0,
+  "uiAmountString": "1.0"
+}`,
+    examples: {
+      curl: `curl -X POST https://your-domain.com/api/token-account/parse \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "accountData": "base64-encoded-account-data",
+    "owner": "11111111111111111111111111111112"
+  }'`,
+      javascript: `const parseTokenAccount = async (accountData, owner) => {
+  const response = await fetch('/api/token-account/parse', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      accountData: accountData,
+      owner: owner
+    }),
+  });
+
+  const parsed = await response.json();
+  console.log('Token Balance:', parsed.uiAmountString);
+  console.log('Token Mint:', parsed.mint);
+  
+  return parsed;
+};`,
+      python: `import requests
+import json
+
+def parse_token_account(account_data, owner):
+    payload = {
+        "accountData": account_data,
+        "owner": owner
+    }
+    
+    response = requests.post(
+        'https://your-domain.com/api/token-account/parse',
+        headers={'Content-Type': 'application/json'},
+        data=json.dumps(payload)
+    )
+    
+    if response.status_code == 200:
+        parsed = response.json()
+        print("Token Balance:", parsed['uiAmountString'])
+        print("Token Mint:", parsed['mint'])
+        return parsed
+    else:
+        print("Error:", response.status_code)
+        return None`,
+      nodejs: `const axios = require('axios');
+
+const parseTokenAccount = async (accountData, owner) => {
+  try {
+    const response = await axios.post('https://your-domain.com/api/token-account/parse', {
+      accountData,
+      owner
+    });
+
+    const parsed = response.data;
+    console.log('Parsed Token Account:');
+    console.log('- Balance:', parsed.uiAmountString);
+    console.log('- Mint:', parsed.mint);
+    console.log('- Owner:', parsed.owner);
+    
+    return parsed;
+  } catch (error) {
+    console.error('Parse error:', error.response?.data || error.message);
+    throw error;
+  }
+};`
+    }
+  },
+  {
+    id: "metrics",
+    method: "GET",
+    path: "/api/metrics",
+    title: "API Metrics",
+    description: "Get API performance metrics and usage statistics",
+    response: `{
+  "totalRequests": 1250,
+  "averageResponseTime": 1.25,
+  "errorRate": 0.8,
+  "uptime": 99.9,
+  "requestsPerHour": 125,
+  "topEndpoints": [
+    {"endpoint": "/api/health", "count": 500},
+    {"endpoint": "/api/pools", "count": 300}
+  ]
+}`,
+    examples: {
+      curl: "curl -X GET https://your-domain.com/api/metrics",
+      javascript: `const response = await fetch('/api/metrics');
+const metrics = await response.json();
+
+console.log('API Performance:');
+console.log('- Total Requests:', metrics.totalRequests);
+console.log('- Average Response Time:', metrics.averageResponseTime + 'ms');
+console.log('- Error Rate:', metrics.errorRate + '%');
+console.log('- Uptime:', metrics.uptime + '%');`,
+      python: `import requests
+
+response = requests.get('https://your-domain.com/api/metrics')
+metrics = response.json()
+
+print("API Performance:")
+print("Total Requests:", metrics['totalRequests'])
+print("Average Response Time:", metrics['averageResponseTime'], "ms")
+print("Error Rate:", metrics['errorRate'], "%")
+print("Uptime:", metrics['uptime'], "%")`,
+      nodejs: `const axios = require('axios');
+
+const getMetrics = async () => {
+  try {
+    const response = await axios.get('https://your-domain.com/api/metrics');
+    const metrics = response.data;
+    
+    console.log('API Performance Dashboard:');
+    console.log('========================');
+    console.log('Total Requests:', metrics.totalRequests.toLocaleString());
+    console.log('Avg Response Time:', metrics.averageResponseTime + 'ms');
+    console.log('Error Rate:', metrics.errorRate + '%');
+    console.log('Uptime:', metrics.uptime + '%');
+    
+    return metrics;
+  } catch (error) {
+    console.error('Failed to fetch metrics:', error);
+  }
+};
+
+getMetrics();`
+    }
   }
 ];
 
