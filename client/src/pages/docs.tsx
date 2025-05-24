@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy, ArrowRightLeft, CheckCircle } from "lucide-react";
+import { Copy, ArrowRightLeft, CheckCircle, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
 
 const endpoints = [
   {
@@ -51,7 +52,7 @@ checkHealth();`
   },
   {
     id: "pools",
-    method: "GET",
+    method: "GET", 
     path: "/api/pools",
     title: "Get All Pools",
     description: "Retrieve all available liquidity pools with metadata",
@@ -198,8 +199,8 @@ def get_swap_quote(input_amount, input_mint, output_mint, slippage=0.5):
         output_readable = int(quote['outputAmount']) / 1e6
         rate = output_readable / input_readable
         
-        print("Swapping {} SOL for {:.2f} USDC".format(input_readable, output_readable))
-        print("Rate: 1 SOL = ${:.2f} USDC".format(rate))
+        print("Swapping {:.1f} SOL for {:.2f} USDC".format(input_readable, output_readable))
+        print("Rate: 1 SOL = {:.2f} USDC".format(rate))
         print("Price Impact: {}%".format(quote['priceImpact']))
         
         return quote
@@ -242,181 +243,10 @@ getSwapQuote(
   1000000000 // 1 SOL
 );`
     }
-  },
-  {
-    id: "tokens",
-    method: "GET",
-    path: "/api/tokens",
-    title: "Get All Tokens",
-    description: "Retrieve all available tokens with metadata",
-    response: `{
-  "tokens": [
-    {
-      "id": 1,
-      "mint": "So11111111111111111111111111111111111111112",
-      "symbol": "SOL",
-      "name": "Solana",
-      "decimals": 9,
-      "price": 95.25,
-      "marketCap": 45000000000,
-      "volume24h": 850000000
-    }
-  ],
-  "count": 2,
-  "updated": "2025-05-24T01:22:32.986Z"
-}`,
-    examples: {
-      curl: "curl -X GET https://your-domain.com/api/tokens",
-      javascript: `const response = await fetch('/api/tokens');
-const data = await response.json();
-
-// Sort by 24h volume
-const topTokens = data.tokens
-  .sort((a, b) => b.volume24h - a.volume24h)
-  .slice(0, 10);
-
-console.log('Top 10 tokens by volume:');
-topTokens.forEach((token, index) => {
-  console.log((index + 1) + '. ' + token.symbol + ': $' + token.volume24h.toLocaleString());
-});`,
-      python: `import requests
-
-response = requests.get('https://your-domain.com/api/tokens')
-data = response.json()
-
-# Find tokens with highest volume
-high_volume_tokens = [
-    token for token in data['tokens']
-    if token['volume24h'] > 100000000  # >$100M volume
-]
-
-for token in high_volume_tokens:
-    market_cap_billions = token['marketCap'] / 1000000000
-    print("{}: ${:.2f} (${:.1f}B market cap)".format(
-        token['symbol'], token['price'], market_cap_billions))`,
-      nodejs: `const axios = require('axios');
-
-const analyzeTokens = async () => {
-  try {
-    const response = await axios.get('https://your-domain.com/api/tokens');
-    const tokens = response.data.tokens;
-    
-    // Calculate volume to market cap ratio
-    const volumeRatios = tokens.map(token => ({
-      ...token,
-      volumeToMarketCapRatio: token.volume24h / token.marketCap
-    }));
-    
-    // Sort by volume ratio (higher = more active trading)
-    volumeRatios.sort((a, b) => b.volumeToMarketCapRatio - a.volumeToMarketCapRatio);
-    
-    console.log('Most actively traded tokens:');
-    volumeRatios.slice(0, 5).forEach((token, index) => {
-      console.log((index + 1) + '. ' + token.symbol + ': ' + 
-        (token.volumeToMarketCapRatio * 100).toFixed(2) + '% daily volume ratio');
-    });
-    
-    return volumeRatios;
-  } catch (error) {
-    console.error('Failed to analyze tokens:', error);
-  }
-};
-
-analyzeTokens();`
-    }
-  },
-  {
-    id: "metrics",
-    method: "GET",
-    path: "/api/metrics",
-    title: "Get API Metrics",
-    description: "Get comprehensive API performance metrics",
-    response: `{
-  "totalRequests": 32,
-  "averageResponseTime": 1.0625,
-  "errorRate": 0,
-  "uptime": 100,
-  "recentRequests": [
-    {
-      "id": 1,
-      "endpoint": "/api/pools",
-      "method": "GET",
-      "responseTime": 127,
-      "statusCode": 200,
-      "timestamp": "2024-01-15T10:30:00Z"
-    }
-  ]
-}`,
-    examples: {
-      curl: "curl -X GET https://your-domain.com/api/metrics",
-      javascript: `const monitorAPI = async () => {
-  const response = await fetch('/api/metrics');
-  const metrics = await response.json();
-  
-  console.log('API Performance:');
-  console.log('- Total Requests: ' + metrics.totalRequests.toLocaleString());
-  console.log('- Average Response Time: ' + metrics.averageResponseTime + 'ms');
-  console.log('- Error Rate: ' + metrics.errorRate + '%');
-  console.log('- Uptime: ' + metrics.uptime + '%');
-  
-  return metrics;
-};
-
-monitorAPI();`,
-      python: `import requests
-
-def monitor_api_health():
-    response = requests.get('https://your-domain.com/api/metrics')
-    metrics = response.json()
-    
-    print("=== API Health Dashboard ===")
-    print("Total Requests: {:,}".format(metrics['totalRequests']))
-    print("Average Response Time: {}ms".format(metrics['averageResponseTime']))
-    print("Error Rate: {}%".format(metrics['errorRate']))
-    print("Uptime: {}%".format(metrics['uptime']))
-    
-    # Health assessment
-    if metrics['uptime'] > 99 and metrics['errorRate'] < 1:
-        print("API Status: HEALTHY")
-    elif metrics['uptime'] > 95:
-        print("API Status: DEGRADED")
-    else:
-        print("API Status: UNHEALTHY")
-    
-    return metrics
-
-monitor_api_health()`,
-      nodejs: `const axios = require('axios');
-
-const generateReport = async () => {
-  try {
-    const response = await axios.get('https://your-domain.com/api/metrics');
-    const metrics = response.data;
-
-    console.log('=== API Performance Report ===');
-    console.log('Total Requests: ' + metrics.totalRequests.toLocaleString());
-    console.log('Avg Response Time: ' + metrics.averageResponseTime + 'ms');
-    console.log('Error Rate: ' + metrics.errorRate + '%');
-    console.log('Uptime: ' + metrics.uptime + '%');
-
-    if (metrics.uptime > 99 && metrics.errorRate < 1) {
-      console.log('All systems operational');
-    } else {
-      console.log('Performance issues detected');
-    }
-
-    return metrics;
-  } catch (error) {
-    console.error('Failed to fetch metrics:', error);
-  }
-};
-
-generateReport();`
-    }
   }
 ];
 
-export default function ApiDocsPage() {
+export default function DocsPage() {
   const [activeEndpoint, setActiveEndpoint] = useState("health");
   const [activeLanguage, setActiveLanguage] = useState("javascript");
   const { toast } = useToast();
@@ -444,14 +274,22 @@ export default function ApiDocsPage() {
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <ArrowRightLeft className="text-white w-5 h-5" />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <ArrowRightLeft className="text-white w-5 h-5" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900">API Documentation</h1>
+                <p className="text-slate-600">FiLotMicroservice - Precision Investing API</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900">API Documentation</h1>
-              <p className="text-slate-600">FiLotMicroservice - Precision Investing API</p>
-            </div>
+            <Link to="/">
+              <Button variant="outline">
+                <BookOpen className="w-4 h-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
           </div>
           
           <div className="flex items-center space-x-4">
