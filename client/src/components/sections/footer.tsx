@@ -1,5 +1,5 @@
 import { ArrowRightLeft } from "lucide-react";
-import { SiGithub, SiTwitter, SiDiscord } from "react-icons/si";
+import { SiGithub, SiX, SiDiscord } from "react-icons/si";
 
 const footerLinks = {
   resources: [
@@ -46,7 +46,7 @@ export default function Footer() {
                 <SiGithub className="w-5 h-5" />
               </a>
               <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                <SiTwitter className="w-5 h-5" />
+                <SiX className="w-5 h-5" />
               </a>
               <a href="#" className="text-slate-400 hover:text-white transition-colors">
                 <SiDiscord className="w-5 h-5" />
