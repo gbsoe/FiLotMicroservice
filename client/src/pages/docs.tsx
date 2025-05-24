@@ -101,7 +101,7 @@ export default function DocsPage() {
   };
 
   const getEndpointExample = (endpoint: any, language: string) => {
-    const baseUrl = window.location.origin;
+    const baseUrl = "https://filotmicroservice.replit.app";
     
     if (endpoint.id === "health") {
       switch (language) {

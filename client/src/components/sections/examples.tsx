@@ -8,7 +8,7 @@ const examples = {
   javascript: {
     title: "Get Swap Quote",
     code: `// Fetch swap quote for SOL to USDC
-const response = await fetch('/api/swap/quote', {
+const response = await fetch('https://filotmicroservice.replit.app/api/swap/quote', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ console.log('Price impact:', quote.priceImpact);`,
 import json
 
 # Get all available pools
-response = requests.get('/api/pools')
+response = requests.get('https://filotmicroservice.replit.app/api/pools')
 pools = response.json()
 
 print(f"Found {pools['count']} pools")
@@ -46,10 +46,10 @@ print(f"High TVL pools: {len(high_tvl_pools)}")`,
   curl: {
     title: "Health Check",
     code: `# Check API health status
-curl -X GET /api/health
+curl -X GET https://filotmicroservice.replit.app/api/health
 
 # Get token information
-curl -X GET /api/tokens/So11111111111111111111111111111111111111112
+curl -X GET https://filotmicroservice.replit.app/api/tokens/So11111111111111111111111111111111111111112
 
 # Request swap quote
 curl -X POST /api/swap/quote \\
