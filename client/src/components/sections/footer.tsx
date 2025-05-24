@@ -6,11 +6,14 @@ const footerLinks = {
   resources: [
     { name: "API Documentation", href: "/docs" },
   ],
-  community: [
-    { name: "GitHub Issues", href: "#" },
-    { name: "Discord Support", href: "#" },
-    { name: "Status Page", href: "#status" },
-    { name: "Changelog", href: "#" },
+  contact: [
+    { name: "@Fi_lotbot", href: "https://twitter.com/Fi_lotbot" },
+    { name: "support@filot.io", href: "mailto:support@filot.io" },
+    { name: "Dubai International Financial Centre, Dubai, UAE", href: "#" },
+  ],
+  ecosystem: [
+    { name: "FiLotsense", href: "#" },
+    { name: "LA! Token", href: "#" },
   ],
 };
 
@@ -68,16 +71,34 @@ export default function Footer() {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4">Community</h4>
+            <h4 className="font-semibold mb-4">Contact & Support</h4>
             <ul className="space-y-2 text-slate-400">
-              {footerLinks.community.map((link, index) => (
+              {footerLinks.contact.map((link, index) => (
                 <li key={index}>
-                  <button 
-                    onClick={() => scrollToSection(link.href)}
-                    className="hover:text-white transition-colors text-left"
+                  <a 
+                    href={link.href}
+                    className="hover:text-white transition-colors text-sm"
+                    target={link.href.startsWith('http') ? "_blank" : "_self"}
+                    rel={link.href.startsWith('http') ? "noopener noreferrer" : undefined}
                   >
                     {link.name}
-                  </button>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">FiLot Ecosystem</h4>
+            <ul className="space-y-2 text-slate-400">
+              {footerLinks.ecosystem.map((link, index) => (
+                <li key={index}>
+                  <a 
+                    href={link.href}
+                    className="hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
