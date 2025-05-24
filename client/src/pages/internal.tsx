@@ -53,7 +53,10 @@ export default function InternalPage() {
       const response = await fetch('/api/internal/quote-swap', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quoteForm)
+        body: JSON.stringify({
+          ...quoteForm,
+          slippagePct: parseFloat(quoteForm.slippagePct)
+        })
       });
 
       if (!response.ok) {
