@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the entire site
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
+Sitemap: https://filotmicroservice.replit.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

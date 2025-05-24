@@ -184,6 +184,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Enable CORS for all routes
   app.use(cors());
 
+  // SEO and crawling optimization routes
+  app.get("/robots.txt", (req, res) => {
+    res.type('text/plain');
+    res.send(`User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the entire site
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
+Sitemap: https://filotmicroservice.replit.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1`);
+  });
+
+  app.get("/sitemap.xml", (req, res) => {
+    res.type('application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://filotmicroservice.replit.app/</loc>
+    <lastmod>2025-05-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://filotmicroservice.replit.app/docs</loc>
+    <lastmod>2025-05-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://filotmicroservice.replit.app/privacy</loc>
+    <lastmod>2025-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://filotmicroservice.replit.app/terms</loc>
+    <lastmod>2025-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>`);
+  });
+
   // Health check endpoint
   app.get("/api/health", async (req, res) => {
     try {
