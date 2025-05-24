@@ -32,7 +32,7 @@ export default function Hero() {
           </h1>
           
           <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-            Professional-grade DeFi tools for precision investing. 
+            DeFi tools for precision investing. 
             Built with Node.js and Raydium SDK v2, providing seamless access to liquidity pools, 
             swap calculations, and market data for informed trading decisions.
           </p>
