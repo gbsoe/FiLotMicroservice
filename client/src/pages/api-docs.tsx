@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy, Play, CheckCircle } from "lucide-react";
+import { Copy, ArrowRightLeft, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const endpoints = [
@@ -13,31 +13,28 @@ const endpoints = [
     path: "/api/health",
     title: "Health Check",
     description: "Check API service status and connectivity",
-    parameters: [],
-    requestBody: null,
-    response: {
-      status: "healthy",
-      timestamp: "2025-05-24T01:22:30.012Z",
-      version: "1.0.0",
-      metrics: {
-        totalRequests: 32,
-        averageResponseTime: 1.0625,
-        errorRate: 0,
-        uptime: 100
-      }
-    },
+    response: `{
+  "status": "healthy",
+  "timestamp": "2025-05-24T01:22:30.012Z",
+  "version": "1.0.0",
+  "metrics": {
+    "totalRequests": 32,
+    "averageResponseTime": 1.0625,
+    "errorRate": 0,
+    "uptime": 100
+  }
+}`,
     examples: {
       curl: "curl -X GET https://your-domain.com/api/health",
-      javascript: `// Using fetch API
-const response = await fetch('/api/health');
+      javascript: `const response = await fetch('/api/health');
 const data = await response.json();
 console.log('API Status:', data.status);`,
       python: `import requests
 
 response = requests.get('https://your-domain.com/api/health')
 data = response.json()
-print(f"API Status: {data['status']}")`,
-      node: `const axios = require('axios');
+print("API Status:", data['status'])`,
+      nodejs: `const axios = require('axios');
 
 const checkHealth = async () => {
   try {
@@ -54,36 +51,33 @@ checkHealth();`
   },
   {
     id: "pools",
-    method: "GET", 
+    method: "GET",
     path: "/api/pools",
     title: "Get All Pools",
     description: "Retrieve all available liquidity pools with metadata",
-    parameters: [],
-    requestBody: null,
-    response: {
-      pools: [
-        {
-          id: 1,
-          poolId: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
-          baseTokenMint: "So11111111111111111111111111111111111111112",
-          quoteTokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-          tvl: 1250000,
-          volume24h: 2500000,
-          apy: 15.5
-        }
-      ],
-      count: 2,
-      updated: "2025-05-24T01:22:32.986Z"
-    },
+    response: `{
+  "pools": [
+    {
+      "id": 1,
+      "poolId": "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+      "baseTokenMint": "So11111111111111111111111111111111111111112",
+      "quoteTokenMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "tvl": 1250000,
+      "volume24h": 2500000,
+      "apy": 15.5
+    }
+  ],
+  "count": 2,
+  "updated": "2025-05-24T01:22:32.986Z"
+}`,
     examples: {
       curl: "curl -X GET https://your-domain.com/api/pools",
-      javascript: `// Get all pools
-const response = await fetch('/api/pools');
+      javascript: `const response = await fetch('/api/pools');
 const data = await response.json();
 
 // Filter high TVL pools
 const highTvlPools = data.pools.filter(pool => pool.tvl > 1000000);
-console.log('Found', highTvlPools.length, 'high TVL pools');`,
+console.log('Found ' + highTvlPools.length + ' high TVL pools');`,
       python: `import requests
 
 response = requests.get('https://your-domain.com/api/pools')
@@ -95,8 +89,8 @@ high_tvl_pools = [
     if pool['tvl'] > 1000000  # $1M+ TVL
 ]
 
-print(f"High TVL pools: {len(high_tvl_pools)}")`,
-      node: `const axios = require('axios');
+print("High TVL pools:", len(high_tvl_pools))`,
+      nodejs: `const axios = require('axios');
 
 const getPools = async () => {
   try {
@@ -108,7 +102,7 @@ const getPools = async () => {
     
     console.log('Top pools by TVL:');
     sortedPools.slice(0, 5).forEach((pool, index) => {
-      console.log(index + 1 + '. TVL: $' + pool.tvl.toLocaleString() + ', APY: ' + pool.apy + '%');
+      console.log((index + 1) + '. TVL: $' + pool.tvl.toLocaleString() + ', APY: ' + pool.apy + '%');
     });
     
     return sortedPools;
@@ -123,46 +117,25 @@ getPools();`
   {
     id: "swap-quote",
     method: "POST",
-    path: "/api/swap/quote", 
+    path: "/api/swap/quote",
     title: "Get Swap Quote",
     description: "Calculate swap quotes with price impact and slippage",
-    parameters: [],
-    requestBody: {
-      inputMint: {
-        type: "string",
-        required: true,
-        description: "Input token mint address",
-        example: "So11111111111111111111111111111111111111112"
-      },
-      outputMint: {
-        type: "string",
-        required: true,
-        description: "Output token mint address",
-        example: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-      },
-      amount: {
-        type: "string",
-        required: true,
-        description: "Input amount in smallest token units",
-        example: "1000000000"
-      },
-      slippage: {
-        type: "number",
-        required: false,
-        description: "Maximum acceptable slippage (0-100)",
-        example: 0.5
-      }
-    },
-    response: {
-      inputMint: "So11111111111111111111111111111111111111112",
-      outputMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-      inputAmount: "1000000000",
-      outputAmount: "94773750000",
-      priceImpact: 0.05,
-      slippage: 0.5,
-      route: ["So11111111111111111111111111111111111111112", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"],
-      minOutputAmount: "94299881250"
-    },
+    requestBody: `{
+  "inputMint": "So11111111111111111111111111111111111111112",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "amount": "1000000000",
+  "slippage": 0.5
+}`,
+    response: `{
+  "inputMint": "So11111111111111111111111111111111111111112",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inputAmount": "1000000000",
+  "outputAmount": "94773750000",
+  "priceImpact": 0.05,
+  "slippage": 0.5,
+  "route": ["So11111111111111111111111111111111111111112", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"],
+  "minOutputAmount": "94299881250"
+}`,
     examples: {
       curl: `curl -X POST https://your-domain.com/api/swap/quote \\
   -H "Content-Type: application/json" \\
@@ -172,8 +145,7 @@ getPools();`
     "amount": "1000000000",
     "slippage": 0.5
   }'`,
-      javascript: `// Calculate swap quote for 1 SOL to USDC
-const swapQuote = async (inputAmount, slippage = 0.5) => {
+      javascript: `const swapQuote = async (inputAmount, slippage = 0.5) => {
   const response = await fetch('/api/swap/quote', {
     method: 'POST',
     headers: {
@@ -207,8 +179,6 @@ swapQuote('1000000000');`,
 import json
 
 def get_swap_quote(input_amount, input_mint, output_mint, slippage=0.5):
-    """Get swap quote between two tokens"""
-    
     payload = {
         "inputMint": input_mint,
         "outputMint": output_mint,
@@ -224,32 +194,24 @@ def get_swap_quote(input_amount, input_mint, output_mint, slippage=0.5):
     
     if response.status_code == 200:
         quote = response.json()
-        
-        # Calculate human-readable amounts
-        if input_mint == "So11111111111111111111111111111111111111112":  # SOL
-            input_readable = int(quote['inputAmount']) / 1e9
-            input_symbol = "SOL"
-        
-        if output_mint == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v":  # USDC
-            output_readable = int(quote['outputAmount']) / 1e6
-            output_symbol = "USDC"
-        
+        input_readable = int(quote['inputAmount']) / 1e9
+        output_readable = int(quote['outputAmount']) / 1e6
         rate = output_readable / input_readable
         
-        print(f"Swapping {input_readable} {input_symbol} for {output_readable:.2f} {output_symbol}")
-        print(f"Rate: 1 {input_symbol} = ${rate:.2f} {output_symbol}")
-        print(f"Price Impact: {quote['priceImpact']}%")
+        print("Swapping {} SOL for {:.2f} USDC".format(input_readable, output_readable))
+        print("Rate: 1 SOL = ${:.2f} USDC".format(rate))
+        print("Price Impact: {}%".format(quote['priceImpact']))
         
         return quote
     else:
-        print(f"Error: {response.status_code}")
+        print("Error:", response.status_code)
         return None
 
-# Example: Get quote for 1 SOL to USDC
+# Example usage
 sol_mint = "So11111111111111111111111111111111111111112"
 usdc_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
 get_swap_quote(1000000000, sol_mint, usdc_mint)`,
-      node: `const axios = require('axios');
+      nodejs: `const axios = require('axios');
 
 const getSwapQuote = async (inputMint, outputMint, amount, slippage = 0.5) => {
   try {
@@ -280,10 +242,181 @@ getSwapQuote(
   1000000000 // 1 SOL
 );`
     }
+  },
+  {
+    id: "tokens",
+    method: "GET",
+    path: "/api/tokens",
+    title: "Get All Tokens",
+    description: "Retrieve all available tokens with metadata",
+    response: `{
+  "tokens": [
+    {
+      "id": 1,
+      "mint": "So11111111111111111111111111111111111111112",
+      "symbol": "SOL",
+      "name": "Solana",
+      "decimals": 9,
+      "price": 95.25,
+      "marketCap": 45000000000,
+      "volume24h": 850000000
+    }
+  ],
+  "count": 2,
+  "updated": "2025-05-24T01:22:32.986Z"
+}`,
+    examples: {
+      curl: "curl -X GET https://your-domain.com/api/tokens",
+      javascript: `const response = await fetch('/api/tokens');
+const data = await response.json();
+
+// Sort by 24h volume
+const topTokens = data.tokens
+  .sort((a, b) => b.volume24h - a.volume24h)
+  .slice(0, 10);
+
+console.log('Top 10 tokens by volume:');
+topTokens.forEach((token, index) => {
+  console.log((index + 1) + '. ' + token.symbol + ': $' + token.volume24h.toLocaleString());
+});`,
+      python: `import requests
+
+response = requests.get('https://your-domain.com/api/tokens')
+data = response.json()
+
+# Find tokens with highest volume
+high_volume_tokens = [
+    token for token in data['tokens']
+    if token['volume24h'] > 100000000  # >$100M volume
+]
+
+for token in high_volume_tokens:
+    market_cap_billions = token['marketCap'] / 1000000000
+    print("{}: ${:.2f} (${:.1f}B market cap)".format(
+        token['symbol'], token['price'], market_cap_billions))`,
+      nodejs: `const axios = require('axios');
+
+const analyzeTokens = async () => {
+  try {
+    const response = await axios.get('https://your-domain.com/api/tokens');
+    const tokens = response.data.tokens;
+    
+    // Calculate volume to market cap ratio
+    const volumeRatios = tokens.map(token => ({
+      ...token,
+      volumeToMarketCapRatio: token.volume24h / token.marketCap
+    }));
+    
+    // Sort by volume ratio (higher = more active trading)
+    volumeRatios.sort((a, b) => b.volumeToMarketCapRatio - a.volumeToMarketCapRatio);
+    
+    console.log('Most actively traded tokens:');
+    volumeRatios.slice(0, 5).forEach((token, index) => {
+      console.log((index + 1) + '. ' + token.symbol + ': ' + 
+        (token.volumeToMarketCapRatio * 100).toFixed(2) + '% daily volume ratio');
+    });
+    
+    return volumeRatios;
+  } catch (error) {
+    console.error('Failed to analyze tokens:', error);
+  }
+};
+
+analyzeTokens();`
+    }
+  },
+  {
+    id: "metrics",
+    method: "GET",
+    path: "/api/metrics",
+    title: "Get API Metrics",
+    description: "Get comprehensive API performance metrics",
+    response: `{
+  "totalRequests": 32,
+  "averageResponseTime": 1.0625,
+  "errorRate": 0,
+  "uptime": 100,
+  "recentRequests": [
+    {
+      "id": 1,
+      "endpoint": "/api/pools",
+      "method": "GET",
+      "responseTime": 127,
+      "statusCode": 200,
+      "timestamp": "2024-01-15T10:30:00Z"
+    }
+  ]
+}`,
+    examples: {
+      curl: "curl -X GET https://your-domain.com/api/metrics",
+      javascript: `const monitorAPI = async () => {
+  const response = await fetch('/api/metrics');
+  const metrics = await response.json();
+  
+  console.log('API Performance:');
+  console.log('- Total Requests: ' + metrics.totalRequests.toLocaleString());
+  console.log('- Average Response Time: ' + metrics.averageResponseTime + 'ms');
+  console.log('- Error Rate: ' + metrics.errorRate + '%');
+  console.log('- Uptime: ' + metrics.uptime + '%');
+  
+  return metrics;
+};
+
+monitorAPI();`,
+      python: `import requests
+
+def monitor_api_health():
+    response = requests.get('https://your-domain.com/api/metrics')
+    metrics = response.json()
+    
+    print("=== API Health Dashboard ===")
+    print("Total Requests: {:,}".format(metrics['totalRequests']))
+    print("Average Response Time: {}ms".format(metrics['averageResponseTime']))
+    print("Error Rate: {}%".format(metrics['errorRate']))
+    print("Uptime: {}%".format(metrics['uptime']))
+    
+    # Health assessment
+    if metrics['uptime'] > 99 and metrics['errorRate'] < 1:
+        print("API Status: HEALTHY")
+    elif metrics['uptime'] > 95:
+        print("API Status: DEGRADED")
+    else:
+        print("API Status: UNHEALTHY")
+    
+    return metrics
+
+monitor_api_health()`,
+      nodejs: `const axios = require('axios');
+
+const generateReport = async () => {
+  try {
+    const response = await axios.get('https://your-domain.com/api/metrics');
+    const metrics = response.data;
+
+    console.log('=== API Performance Report ===');
+    console.log('Total Requests: ' + metrics.totalRequests.toLocaleString());
+    console.log('Avg Response Time: ' + metrics.averageResponseTime + 'ms');
+    console.log('Error Rate: ' + metrics.errorRate + '%');
+    console.log('Uptime: ' + metrics.uptime + '%');
+
+    if (metrics.uptime > 99 && metrics.errorRate < 1) {
+      console.log('All systems operational');
+    } else {
+      console.log('Performance issues detected');
+    }
+
+    return metrics;
+  } catch (error) {
+    console.error('Failed to fetch metrics:', error);
+  }
+};
+
+generateReport();`
+    }
   }
 ];
 
-export default function Documentation() {
+export default function ApiDocsPage() {
   const [activeEndpoint, setActiveEndpoint] = useState("health");
   const [activeLanguage, setActiveLanguage] = useState("javascript");
   const { toast } = useToast();
@@ -313,7 +446,7 @@ export default function Documentation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center space-x-4 mb-4">
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Play className="text-white w-5 h-5" />
+              <ArrowRightLeft className="text-white w-5 h-5" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-slate-900">API Documentation</h1>
@@ -396,58 +529,14 @@ export default function Documentation() {
                 </div>
               </CardHeader>
               <CardContent>
-                {/* Parameters */}
-                {currentEndpoint.parameters.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3">Parameters</h3>
-                    <div className="space-y-2">
-                      {currentEndpoint.parameters.map((param, index) => (
-                        <div key={index} className="border rounded-lg p-3">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <code className="bg-slate-100 px-2 py-1 rounded text-sm">{param.name}</code>
-                            <Badge variant={param.required ? "default" : "secondary"}>
-                              {param.required ? "Required" : "Optional"}
-                            </Badge>
-                            <span className="text-sm text-slate-500">{param.type}</span>
-                          </div>
-                          <p className="text-sm text-slate-600">{param.description}</p>
-                          {param.example && (
-                            <div className="mt-2">
-                              <span className="text-xs text-slate-500">Example: </span>
-                              <code className="text-xs bg-slate-100 px-1 py-0.5 rounded">{param.example}</code>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {/* Request Body */}
                 {currentEndpoint.requestBody && (
                   <div className="mb-6">
                     <h3 className="text-lg font-semibold mb-3">Request Body</h3>
-                    <div className="border rounded-lg p-4 bg-slate-50">
-                      <div className="space-y-3">
-                        {Object.entries(currentEndpoint.requestBody).map(([key, field]: [string, any]) => (
-                          <div key={key} className="border-l-2 border-blue-200 pl-3">
-                            <div className="flex items-center space-x-2 mb-1">
-                              <code className="bg-white px-2 py-1 rounded text-sm">{key}</code>
-                              <Badge variant={field.required ? "default" : "secondary"}>
-                                {field.required ? "Required" : "Optional"}
-                              </Badge>
-                              <span className="text-sm text-slate-500">{field.type}</span>
-                            </div>
-                            <p className="text-sm text-slate-600">{field.description}</p>
-                            {field.example && (
-                              <div className="mt-1">
-                                <span className="text-xs text-slate-500">Example: </span>
-                                <code className="text-xs bg-white px-1 py-0.5 rounded">{field.example}</code>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                    <div className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
+                      <pre className="text-green-400 text-sm">
+                        <code>{currentEndpoint.requestBody}</code>
+                      </pre>
                     </div>
                   </div>
                 )}
@@ -457,7 +546,7 @@ export default function Documentation() {
                   <h3 className="text-lg font-semibold mb-3">Response Example</h3>
                   <div className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
                     <pre className="text-green-400 text-sm">
-                      <code>{JSON.stringify(currentEndpoint.response, null, 2)}</code>
+                      <code>{currentEndpoint.response}</code>
                     </pre>
                   </div>
                 </div>
@@ -470,7 +559,7 @@ export default function Documentation() {
                       <TabsTrigger value="curl">cURL</TabsTrigger>
                       <TabsTrigger value="javascript">JavaScript</TabsTrigger>
                       <TabsTrigger value="python">Python</TabsTrigger>
-                      <TabsTrigger value="node">Node.js</TabsTrigger>
+                      <TabsTrigger value="nodejs">Node.js</TabsTrigger>
                     </TabsList>
                     
                     {Object.entries(currentEndpoint.examples).map(([language, code]) => (

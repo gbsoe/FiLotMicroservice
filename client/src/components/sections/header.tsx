@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ArrowRightLeft, Play } from "lucide-react";
+import { Menu, ArrowRightLeft, Play, BookOpen } from "lucide-react";
+import { Link } from "wouter";
 
 export default function Header() {
   const scrollToSection = (sectionId: string) => {
@@ -49,6 +50,12 @@ export default function Header() {
             >
               Status
             </button>
+            <Link to="/docs">
+              <Button variant="outline" className="mr-3">
+                <BookOpen className="w-4 h-4 mr-2" />
+                API Docs
+              </Button>
+            </Link>
             <Button 
               onClick={() => scrollToSection('examples')}
               className="bg-blue-600 text-white hover:bg-blue-700"
