@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import Header from "@/components/sections/header";
 import Footer from "@/components/sections/footer";
 
 export default function TermsPage() {
+  useEffect(() => {
+    document.title = "Terms of Service - FiLotMicroservice | Usage Agreement";
+  }, []);
   return (
     <div className="min-h-screen bg-slate-50">
       <Header />

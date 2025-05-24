@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,10 @@ export default function DocsPage() {
   const [activeEndpoint, setActiveEndpoint] = useState("health");
   const [activeLanguage, setActiveLanguage] = useState("javascript");
   const { toast } = useToast();
+
+  useEffect(() => {
+    document.title = "API Documentation - FiLotMicroservice | Raydium SDK v2 Integration";
+  }, []);
 
   const copyToClipboard = async (text: string) => {
     try {

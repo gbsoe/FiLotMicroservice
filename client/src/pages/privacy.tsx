@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import Header from "@/components/sections/header";
 import Footer from "@/components/sections/footer";
 
 export default function PrivacyPage() {
+  useEffect(() => {
+    document.title = "Privacy Policy - FiLotMicroservice | Data Protection & Security";
+  }, []);
   return (
     <div className="min-h-screen bg-slate-50">
       <Header />
