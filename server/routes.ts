@@ -320,53 +320,324 @@ export async function registerRoutes(app: Express): Promise<Server> {
         {
           path: "/api/health",
           method: "GET",
-          description: "Check API health status",
+          description: "Health check endpoint to verify API status and connectivity",
+          parameters: {},
+          responses: {
+            "200": {
+              description: "API is healthy and operational",
+              example: {
+                status: "healthy",
+                timestamp: "2024-01-15T10:30:00Z",
+                version: "1.0.0",
+                metrics: {
+                  totalRequests: 1247,
+                  averageResponseTime: 89,
+                  errorRate: 0.03,
+                  uptime: 99.97
+                }
+              }
+            }
+          }
         },
         {
           path: "/api/pools",
           method: "GET",
-          description: "Get all liquidity pools",
+          description: "Retrieve all available liquidity pools with comprehensive metadata including TVL, volume, and APY",
+          parameters: {},
+          responses: {
+            "200": {
+              description: "Successfully retrieved all pools",
+              example: {
+                pools: [
+                  {
+                    id: 1,
+                    poolId: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                    baseTokenMint: "So11111111111111111111111111111111111111112",
+                    quoteTokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                    lpTokenMint: "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+                    baseTokenReserve: "1000000000000",
+                    quoteTokenReserve: "50000000000",
+                    tvl: 1250000,
+                    volume24h: 2500000,
+                    apy: 15.5,
+                    createdAt: "2024-01-15T10:30:00Z",
+                    updatedAt: "2024-01-15T10:30:00Z"
+                  }
+                ],
+                count: 156,
+                updated: "2024-01-15T10:30:00Z"
+              }
+            }
+          }
         },
         {
           path: "/api/pools/:poolId",
           method: "GET",
-          description: "Get specific pool information",
+          description: "Get detailed information for a specific liquidity pool by its unique identifier",
+          parameters: {
+            poolId: {
+              type: "string",
+              description: "Unique pool identifier",
+              required: true,
+              example: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2"
+            }
+          },
+          responses: {
+            "200": {
+              description: "Pool information retrieved successfully",
+              example: {
+                id: 1,
+                poolId: "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+                baseTokenMint: "So11111111111111111111111111111111111111112",
+                quoteTokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                tvl: 1250000,
+                volume24h: 2500000,
+                apy: 15.5
+              }
+            },
+            "404": {
+              description: "Pool not found",
+              example: {
+                error: "Pool not found",
+                poolId: "invalid-pool-id"
+              }
+            }
+          }
         },
         {
           path: "/api/tokens",
           method: "GET",
-          description: "Get all tokens",
+          description: "Retrieve all available tokens with metadata including price, market cap, and volume",
+          parameters: {},
+          responses: {
+            "200": {
+              description: "Successfully retrieved all tokens",
+              example: {
+                tokens: [
+                  {
+                    id: 1,
+                    mint: "So11111111111111111111111111111111111111112",
+                    symbol: "SOL",
+                    name: "Solana",
+                    decimals: 9,
+                    logoUri: "https://example.com/sol-logo.png",
+                    price: 95.25,
+                    marketCap: 45000000000,
+                    volume24h: 850000000,
+                    createdAt: "2024-01-15T10:30:00Z",
+                    updatedAt: "2024-01-15T10:30:00Z"
+                  }
+                ],
+                count: 89,
+                updated: "2024-01-15T10:30:00Z"
+              }
+            }
+          }
         },
         {
           path: "/api/tokens/:mint",
           method: "GET",
-          description: "Get specific token information",
+          description: "Get detailed information for a specific token by its mint address",
+          parameters: {
+            mint: {
+              type: "string",
+              description: "Token mint address (public key)",
+              required: true,
+              example: "So11111111111111111111111111111111111111112"
+            }
+          },
+          responses: {
+            "200": {
+              description: "Token information retrieved successfully",
+              example: {
+                id: 1,
+                mint: "So11111111111111111111111111111111111111112",
+                symbol: "SOL",
+                name: "Solana",
+                decimals: 9,
+                price: 95.25,
+                marketCap: 45000000000,
+                volume24h: 850000000
+              }
+            },
+            "404": {
+              description: "Token not found",
+              example: {
+                error: "Token not found",
+                mint: "invalid-mint-address"
+              }
+            }
+          }
         },
         {
           path: "/api/swap/quote",
           method: "POST",
-          description: "Calculate swap quote",
-          body: {
-            inputMint: "string",
-            outputMint: "string",
-            amount: "string",
-            slippage: "number (optional, default: 0.5)",
+          description: "Calculate swap quotes with price impact, slippage, and optimal routing for token exchanges",
+          parameters: {},
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  inputMint: {
+                    type: "string",
+                    description: "Input token mint address",
+                    required: true,
+                    example: "So11111111111111111111111111111111111111112"
+                  },
+                  outputMint: {
+                    type: "string",
+                    description: "Output token mint address",
+                    required: true,
+                    example: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                  },
+                  amount: {
+                    type: "string",
+                    description: "Input amount in smallest token units (lamports for SOL)",
+                    required: true,
+                    example: "1000000000"
+                  },
+                  slippage: {
+                    type: "number",
+                    description: "Maximum acceptable slippage percentage (0-100)",
+                    required: false,
+                    default: 0.5,
+                    example: 0.5
+                  }
+                }
+              }
+            }
           },
+          responses: {
+            "200": {
+              description: "Swap quote calculated successfully",
+              example: {
+                inputMint: "So11111111111111111111111111111111111111112",
+                outputMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                inputAmount: "1000000000",
+                outputAmount: "95250000",
+                priceImpact: 0.05,
+                slippage: 0.5,
+                route: ["So11111111111111111111111111111111111111112", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"],
+                minOutputAmount: "94772500"
+              }
+            },
+            "400": {
+              description: "Validation error",
+              example: {
+                error: "Validation error",
+                details: [
+                  {
+                    code: "invalid_type",
+                    expected: "string",
+                    received: "undefined",
+                    path: ["inputMint"],
+                    message: "Input token mint is required"
+                  }
+                ]
+              }
+            }
+          }
         },
         {
           path: "/api/token-account/parse",
           method: "POST",
-          description: "Parse token account data",
-          body: {
-            accountData: "string",
-            owner: "string",
+          description: "Parse raw token account data to extract readable token balance and metadata",
+          parameters: {},
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  accountData: {
+                    type: "string",
+                    description: "Base64 encoded token account data",
+                    required: true,
+                    example: "base64-encoded-account-data"
+                  },
+                  owner: {
+                    type: "string",
+                    description: "Owner wallet address",
+                    required: true,
+                    example: "11111111111111111111111111111112"
+                  }
+                }
+              }
+            }
           },
+          responses: {
+            "200": {
+              description: "Token account parsed successfully",
+              example: {
+                mint: "So11111111111111111111111111111111111111112",
+                owner: "11111111111111111111111111111112",
+                amount: "1000000000",
+                decimals: 9,
+                uiAmount: 1.0,
+                uiAmountString: "1.0"
+              }
+            },
+            "400": {
+              description: "Validation error",
+              example: {
+                error: "Validation error",
+                details: [
+                  {
+                    code: "invalid_type",
+                    expected: "string",
+                    received: "undefined",
+                    path: ["accountData"],
+                    message: "Account data is required"
+                  }
+                ]
+              }
+            }
+          }
         },
         {
           path: "/api/metrics",
           method: "GET",
-          description: "Get API metrics and performance data",
+          description: "Get comprehensive API performance metrics including request counts, response times, and error rates",
+          parameters: {},
+          responses: {
+            "200": {
+              description: "Metrics retrieved successfully",
+              example: {
+                totalRequests: 1247,
+                averageResponseTime: 89,
+                errorRate: 0.03,
+                uptime: 99.97,
+                recentRequests: [
+                  {
+                    id: 1,
+                    endpoint: "/api/pools",
+                    method: "GET",
+                    responseTime: 127,
+                    statusCode: 200,
+                    timestamp: "2024-01-15T10:30:00Z"
+                  }
+                ]
+              }
+            }
+          }
         },
+        {
+          path: "/api/docs",
+          method: "GET",
+          description: "Get this API documentation with detailed endpoint specifications",
+          parameters: {},
+          responses: {
+            "200": {
+              description: "Documentation retrieved successfully",
+              example: {
+                title: "FiLotMicroservice - Precision Investing API",
+                description: "Professional-grade DeFi tools for precision investing",
+                version: "1.0.0",
+                endpoints: "..."
+              }
+            }
+          }
+        }
       ],
     });
   });
