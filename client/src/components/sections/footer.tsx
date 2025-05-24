@@ -1,5 +1,6 @@
 import { ArrowRightLeft } from "lucide-react";
 import { SiGithub, SiX, SiDiscord } from "react-icons/si";
+import { Link } from "wouter";
 
 const footerLinks = {
   resources: [
@@ -56,12 +57,11 @@ export default function Footer() {
             <ul className="space-y-2 text-slate-400">
               {footerLinks.resources.map((link, index) => (
                 <li key={index}>
-                  <button 
-                    onClick={() => scrollToSection(link.href)}
-                    className="hover:text-white transition-colors text-left"
-                  >
-                    {link.name}
-                  </button>
+                  <Link href={link.href}>
+                    <a className="hover:text-white transition-colors">
+                      {link.name}
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
