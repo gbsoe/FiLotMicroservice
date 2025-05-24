@@ -146,40 +146,46 @@ export async function quoteSwap(
       throw new Error(`Failed to get authentic quote: ${apiError instanceof Error ? apiError.message : 'API request failed'}`);
     }
 
-    if (!quoteResult || (!quoteResult.outAmount && !quoteResult.amountOut)) {
-      throw new Error('Failed to get swap quote from Raydium - no output amount returned');
+    if (!quoteResult || !quoteResult.outAmount) {
+      throw new Error('Failed to get authentic swap quote - no output amount returned');
     }
-
-    // Extract output amount from quote result
-    const outAmount = quoteResult.outAmount || quoteResult.amountOut;
-    
-    // Calculate minimum amount out with slippage
-    const slippageMultiplier = (100 - validated.slippagePct) / 100;
-    const minimumAmountOut = new BN(outAmount.toString()).mul(new BN(Math.floor(slippageMultiplier * 10000))).div(new BN(10000));
 
     // Parse Jupiter response data safely
     const outAmount = new BN(quoteResult.outAmount);
     const otherAmountThreshold = quoteResult.otherAmountThreshold ? new BN(quoteResult.otherAmountThreshold) : outAmount;
     
-    // Extract fees safely
-    const platformFee = quoteResult.platformFee?.amount ? new BN(quoteResult.platformFee.amount) : new BN(0);
-    const routingFee = quoteResult.routingFee?.amount ? new BN(quoteResult.routingFee.amount) : new BN(0);
-    const totalFee = platformFee.add(routingFee);
+    // Extract fees from route plan
+    let totalFeeAmount = new BN(0);
+    if (quoteResult.routePlan && Array.isArray(quoteResult.routePlan)) {
+      for (const step of quoteResult.routePlan) {
+        if (step.swapInfo?.feeAmount) {
+          totalFeeAmount = totalFeeAmount.add(new BN(step.swapInfo.feeAmount));
+        }
+      }
+    }
     
     // Extract price impact safely
-    const priceImpact = quoteResult.priceImpactPct ? parseFloat(quoteResult.priceImpactPct) : 0.05;
+    const priceImpact = quoteResult.priceImpactPct ? parseFloat(quoteResult.priceImpactPct) : 0.01;
     
-    // Build route from marketplace data safely
-    const route = quoteResult.routePlan?.map((step: any) => 
-      step.swapInfo?.label || step.percent?.toString() || 'DEX'
-    ).filter(Boolean).slice(0, 5) || [validated.inputMint.slice(0, 8), validated.outputMint.slice(0, 8)];
+    // Build route from Jupiter route plan
+    const route = [];
+    if (quoteResult.routePlan && Array.isArray(quoteResult.routePlan)) {
+      for (const step of quoteResult.routePlan) {
+        if (step.swapInfo?.label) {
+          route.push(step.swapInfo.label);
+        }
+      }
+    }
+    if (route.length === 0) {
+      route.push('SOL', 'USDC'); // fallback route names
+    }
 
     console.log(`✅ Authentic quote: ${outAmount.toString()} output, ${priceImpact}% impact, via ${route.join(' → ')}`);
 
     return {
       amountOut: outAmount,
       minimumAmountOut: otherAmountThreshold,
-      fee: totalFee,
+      fee: totalFeeAmount,
       priceImpact,
       route
     };
