@@ -15,7 +15,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-gradient-to-br from-indigo-50 via-white to-slate-50 py-16 lg:py-24">
+    <section className="bg-gradient-to-br from-blue-50 via-white to-slate-50 py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           <Badge 
@@ -28,7 +28,7 @@ export default function Hero() {
           
           <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
             FiLotMicroservice
-            <span className="text-indigo-500 block">Precision Investing</span>
+            <span className="text-blue-600 block">Precision Investing</span>
           </h1>
           
           <p className="text-xl text-slate-600 mb-8 leading-relaxed">
@@ -41,7 +41,7 @@ export default function Hero() {
             <Button 
               size="lg"
               onClick={() => scrollToSection('examples')}
-              className="bg-indigo-500 text-white hover:bg-indigo-600 px-8 py-4 text-lg"
+              className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 text-lg"
             >
               <Rocket className="w-5 h-5 mr-2" />
               Get Started

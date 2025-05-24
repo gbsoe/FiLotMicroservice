@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  --primary: 225 73% 57%; /* Royal Blue */
+  --primary-foreground: 210 40% 98%;
+}
+
+:root {
       --background: 0 0% 100%;
 --foreground: 20 14.3% 4.1%;
 --muted: 60 4.8% 95.9%;

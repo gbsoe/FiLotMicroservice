@@ -110,7 +110,7 @@ export default function Endpoints() {
         </div>
         
         <div className="text-center mt-12">
-          <Button className="bg-indigo-500 text-white hover:bg-indigo-600">
+          <Button className="bg-blue-600 text-white hover:bg-blue-700">
             <Book className="w-4 h-4 mr-2" />
             View Full API Documentation
           </Button>

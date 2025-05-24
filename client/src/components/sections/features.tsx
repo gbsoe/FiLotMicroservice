@@ -13,7 +13,7 @@ const features = [
     icon: Key,
     title: "No Authentication",
     description: "Start using immediately without API keys, registration, or authentication. Perfect for rapid prototyping and development.",
-    iconBg: "bg-indigo-500",
+    iconBg: "bg-blue-600",
   },
   {
     icon: ArrowRightLeft,

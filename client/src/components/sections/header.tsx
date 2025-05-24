@@ -15,7 +15,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <ArrowRightLeft className="text-white w-4 h-4" />
             </div>
             <div>
@@ -51,7 +51,7 @@ export default function Header() {
             </button>
             <Button 
               onClick={() => scrollToSection('examples')}
-              className="bg-indigo-500 text-white hover:bg-indigo-600"
+              className="bg-blue-600 text-white hover:bg-blue-700"
             >
               <Play className="w-4 h-4 mr-2" />
               Try Now
@@ -92,7 +92,7 @@ export default function Header() {
                 </button>
                 <Button 
                   onClick={() => scrollToSection('examples')}
-                  className="bg-indigo-500 text-white hover:bg-indigo-600 justify-start"
+                  className="bg-blue-600 text-white hover:bg-blue-700 justify-start"
                 >
                   <Play className="w-4 h-4 mr-2" />
                   Try Now
