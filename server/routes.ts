@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { swapQuoteSchema, tokenAccountParseSchema } from "@shared/schema";
+import { swapQuoteSchema, tokenAccountParseSchema } from "../shared/schema";
 import cors from "cors";
 import { Connection, PublicKey, Keypair } from "@solana/web3.js";
 import { Raydium } from "@raydium-io/raydium-sdk-v2";

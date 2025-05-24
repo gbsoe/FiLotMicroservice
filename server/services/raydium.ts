@@ -115,21 +115,42 @@ export async function quoteSwap(
 
     console.log(`Getting swap quote: ${validated.amountIn.toString()} ${inputMint} -> ${outputMint}`);
 
-    // Use Raydium SDK to get swap quote
-    const quoteResult = await raydium.api.getSwapQuote({
-      inputMint: inputMintPubkey,
-      outputMint: outputMintPubkey,
-      amount: validated.amountIn,
-      slippageBps: Math.floor(validated.slippagePct * 100), // Convert percentage to basis points
-    });
-
-    if (!quoteResult || !quoteResult.outAmount) {
-      throw new Error('Failed to get swap quote from Raydium');
+    // Use Raydium SDK to get swap quote with proper error handling
+    let quoteResult;
+    try {
+      // Try different API methods based on Raydium SDK v2 structure
+      if (raydium.api && raydium.api.getSwapQuote) {
+        quoteResult = await raydium.api.getSwapQuote({
+          inputMint: inputMintPubkey,
+          outputMint: outputMintPubkey,
+          amount: validated.amountIn,
+          slippageBps: Math.floor(validated.slippagePct * 100),
+        });
+      } else if (raydium.quote && raydium.quote.swap) {
+        quoteResult = await raydium.quote.swap({
+          inputMint: inputMintPubkey,
+          outputMint: outputMintPubkey,
+          amount: validated.amountIn,
+          slippage: validated.slippagePct,
+        });
+      } else {
+        throw new Error('Raydium SDK quote method not available');
+      }
+    } catch (sdkError) {
+      console.error('Raydium SDK error:', sdkError);
+      throw new Error(`Raydium SDK error: ${sdkError instanceof Error ? sdkError.message : 'Unknown error'}`);
     }
 
+    if (!quoteResult || (!quoteResult.outAmount && !quoteResult.amountOut)) {
+      throw new Error('Failed to get swap quote from Raydium - no output amount returned');
+    }
+
+    // Extract output amount from quote result
+    const outAmount = quoteResult.outAmount || quoteResult.amountOut;
+    
     // Calculate minimum amount out with slippage
     const slippageMultiplier = (100 - validated.slippagePct) / 100;
-    const minimumAmountOut = new BN(quoteResult.outAmount.toString()).muln(slippageMultiplier);
+    const minimumAmountOut = new BN(outAmount.toString()).mul(new BN(Math.floor(slippageMultiplier * 10000))).div(new BN(10000));
 
     return {
       amountOut: new BN(quoteResult.outAmount.toString()),

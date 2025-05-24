@@ -1,4 +1,4 @@
-import { pools, tokens, apiLogs, type Pool, type Token, type ApiLog, type InsertPool, type InsertToken, type InsertApiLog } from "@shared/schema";
+import { pools, tokens, apiLogs, type Pool, type Token, type ApiLog, type InsertPool, type InsertToken, type InsertApiLog } from "../shared/schema";
 
 export interface IStorage {
   // Pool operations
