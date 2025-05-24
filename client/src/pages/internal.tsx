@@ -247,58 +247,130 @@ export default function InternalPage() {
                           <code className="text-xs md:text-sm font-mono break-all">/api/internal/quote-swap</code>
                         </div>
                         <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Get authentic swap quotes using Raydium SDK v2 integration
+                          Get authentic swap quotes using Raydium SDK v2 - calculates exact output amounts, fees, and price impact
                         </p>
-                        <div className="text-xs md:text-sm">
-                          <div><strong>Request Body:</strong></div>
-                          <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+                        <div className="text-xs md:text-sm space-y-3">
+                          <div>
+                            <strong>Required Fields:</strong>
+                            <ul className="list-disc pl-4 mt-1 space-y-1">
+                              <li><code>inputMint</code> (string) - Source token mint address</li>
+                              <li><code>outputMint</code> (string) - Target token mint address</li>
+                              <li><code>amountIn</code> (string) - Input amount in base units</li>
+                              <li><code>slippagePct</code> (number, optional) - Slippage tolerance (default: 0.5)</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <strong>Request Example:</strong>
+                            <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
   "inputMint": "So11111111111111111111111111111111111111112",
   "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   "amountIn": "1000000000",
-  "slippagePct": "0.5"
+  "slippagePct": 0.5
 }`}</pre>
+                          </div>
+                          <div>
+                            <strong>Response Example:</strong>
+                            <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "success": true,
+  "quote": {
+    "amountOut": "999500000",
+    "minimumAmountOut": "994500250",
+    "fee": "2500000",
+    "priceImpact": 0.12,
+    "route": ["So111...", "EPjFW..."]
+  }
+}`}</pre>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="border rounded-lg p-4 border-red-200">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">POST</Badge>
-                          <code className="text-sm font-mono">/api/internal/execute-swap</code>
+                      <div className="border rounded-lg p-3 md:p-4 border-red-200">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300 text-xs">POST</Badge>
+                          <code className="text-xs md:text-sm font-mono break-all">/api/internal/execute-swap</code>
                           <Badge variant="destructive" className="text-xs">Internal Use Only</Badge>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Execute swap transaction using private key authentication
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Execute actual swap transaction on Solana mainnet using private key signing
                         </p>
-                        <div className="text-sm">
-                          <div><strong>Request Body:</strong></div>
-                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+                        <div className="text-xs md:text-sm space-y-3">
+                          <div>
+                            <strong>Required Fields:</strong>
+                            <ul className="list-disc pl-4 mt-1 space-y-1">
+                              <li><code>inputMint</code> (string) - Source token mint address</li>
+                              <li><code>outputMint</code> (string) - Target token mint address</li>
+                              <li><code>amountIn</code> (string) - Input amount in base units</li>
+                              <li><code>ownerPubkey</code> (string) - Wallet public key</li>
+                              <li><code>privateKey</code> (string|array) - Private key (base58 or number array)</li>
+                              <li><code>slippagePct</code> (number, optional) - Slippage tolerance (default: 0.5)</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <strong>Request Example:</strong>
+                            <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
   "inputMint": "So11111111111111111111111111111111111111112",
   "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   "amountIn": "1000000000",
-  "slippagePct": "0.5",
-  "ownerPubkey": "wallet_address",
-  "privateKey": "[1,2,3...] or base58_string"
+  "slippagePct": 0.5,
+  "ownerPubkey": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+  "privateKey": "base58_encoded_private_key"
 }`}</pre>
+                          </div>
+                          <div>
+                            <strong>Response Example:</strong>
+                            <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "success": true,
+  "txid": "5j8fK2M3N9pQ4R7sT6uV8wX1yZ2aB3cD4eF5gH6iJ7kL8mN9oP0q",
+  "explorerUrl": "https://solscan.io/tx/5j8fK2M3N9pQ4R7sT6uV8w..."
+}`}</pre>
+                          </div>
+                          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded p-2">
+                            <strong className="text-amber-800 dark:text-amber-200">Security Note:</strong>
+                            <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">Private key validation ensures the provided public key matches before transaction execution.</p>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="border rounded-lg p-4 border-orange-200">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300">POST</Badge>
-                          <code className="text-sm font-mono">/api/internal/transfer-token</code>
+                      <div className="border rounded-lg p-3 md:p-4 border-orange-200">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300 text-xs">POST</Badge>
+                          <code className="text-xs md:text-sm font-mono break-all">/api/internal/transfer-token</code>
                           <Badge variant="destructive" className="text-xs">Internal Use Only</Badge>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Transfer SPL tokens between wallets with private key signing
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Transfer SPL tokens between Solana wallets using secure private key authentication
                         </p>
-                        <div className="text-sm">
-                          <div><strong>Request Body:</strong></div>
-                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+                        <div className="text-xs md:text-sm space-y-3">
+                          <div>
+                            <strong>Required Fields:</strong>
+                            <ul className="list-disc pl-4 mt-1 space-y-1">
+                              <li><code>mint</code> (string) - SPL token mint address</li>
+                              <li><code>fromPrivateKey</code> (string|array) - Sender's private key (base58 or number array)</li>
+                              <li><code>toPublicKey</code> (string) - Recipient's wallet address</li>
+                              <li><code>amount</code> (string) - Transfer amount in base units</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <strong>Request Example:</strong>
+                            <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
   "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  "fromPrivateKey": "[1,2,3...] or base58_string",
-  "toPublicKey": "recipient_wallet_address",
+  "fromPrivateKey": "base58_encoded_private_key",
+  "toPublicKey": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
   "amount": "1000000"
 }`}</pre>
+                          </div>
+                          <div>
+                            <strong>Response Example:</strong>
+                            <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "success": true,
+  "txid": "2h7jK9L4M8nP5qR8sT1uV3wX0yZ9aB2cD7eF4gH5iJ6kL9mN0oP",
+  "explorerUrl": "https://solscan.io/tx/2h7jK9L4M8nP5qR8sT1uV3w..."
+}`}</pre>
+                          </div>
+                          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-2">
+                            <strong className="text-blue-800 dark:text-blue-200">Validation:</strong>
+                            <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">Recipient address validation ensures valid Solana public key before transfer execution.</p>
+                          </div>
                         </div>
                       </div>
 
