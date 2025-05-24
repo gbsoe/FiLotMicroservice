@@ -97,6 +97,12 @@ export default function Header() {
                 >
                   Status
                 </button>
+                <Link to="/docs">
+                  <Button className="bg-blue-500 text-white hover:bg-blue-600 justify-start w-full">
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    API Docs
+                  </Button>
+                </Link>
                 <Button 
                   onClick={() => scrollToSection('examples')}
                   className="bg-blue-600 text-white hover:bg-blue-700 justify-start"
