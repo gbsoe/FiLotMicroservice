@@ -168,7 +168,7 @@ def api_request_with_retry(url: str, max_retries: int = 3) -> Dict[Any, Any]:
 
 ---
 
-## 🔗 Complete Endpoint Reference
+## Complete Endpoint Reference
 
 ### 1. Health Check
 Monitor API status and connection to Raydium SDK.
