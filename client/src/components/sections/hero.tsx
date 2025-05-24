@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Rocket, Github } from "lucide-react";
 import { useApiStatus } from "@/hooks/use-api-status";
+import { Link } from "wouter";
 
 export default function Hero() {
   const { data: status } = useApiStatus();
@@ -46,15 +47,16 @@ export default function Hero() {
               <Rocket className="w-5 h-5 mr-2" />
               Get Started
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={() => scrollToSection('endpoints')}
-              className="px-8 py-4 text-lg"
-            >
-              <Github className="w-5 h-5 mr-2" />
-              View Documentation
-            </Button>
+            <Link to="/docs">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="px-8 py-4 text-lg"
+              >
+                <Github className="w-5 h-5 mr-2" />
+                View Documentation
+              </Button>
+            </Link>
           </div>
           
           {/* Quick Stats */}
