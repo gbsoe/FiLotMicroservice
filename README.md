@@ -1,22 +1,22 @@
 # FiLotMicroservice - Precision Investing API
 
-🚀 **A robust Node.js microservice providing streamlined access to authentic Raydium SDK v2 functionality for DeFi operations**
+A robust Node.js microservice providing streamlined access to authentic Raydium SDK v2 functionality for DeFi operations.
 
-## 🎯 Overview
+## Overview
 
 FiLotMicroservice is a production-ready API that simplifies blockchain token swapping and DeFi interactions for developers and traders. Built with authentic Raydium SDK v2 integration, it provides real-time market data without any mock or synthetic information.
 
-### ✨ Key Features
+### Key Features
 
-- **🔗 Authentic Raydium SDK v2 Integration** - Direct connection to real DeFi protocols
-- **💰 Live Market Data** - Real swap quotes from Jupiter API (current: 1 SOL = ~175 USDC)
-- **🪙 Verified Token Information** - Authentic tokens like PayPal USD, Wrapped Ethereum, Pudgy Penguins
-- **⚡ High Performance** - Average response time under 63ms
-- **📚 Complete Documentation** - Interactive API docs with code examples
-- **🔍 Real-time Monitoring** - API metrics and health tracking
-- **🌐 Public Access** - No authentication required
+- **Authentic Raydium SDK v2 Integration** - Direct connection to real DeFi protocols
+- **Live Market Data** - Real swap quotes from Jupiter API (current: 1 SOL = ~175 USDC)
+- **Verified Token Information** - Authentic tokens like PayPal USD, Wrapped Ethereum, Pudgy Penguins
+- **High Performance** - Average response time under 63ms
+- **Complete Documentation** - Interactive API docs with code examples
+- **Real-time Monitoring** - API metrics and health tracking
+- **Public Access** - No authentication required
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Backend:** Node.js + Express.js + TypeScript
 - **Frontend:** React + Vite + TailwindCSS
@@ -25,21 +25,21 @@ FiLotMicroservice is a production-ready API that simplifies blockchain token swa
 - **UI Components:** Shadcn/ui + Radix UI
 - **State Management:** TanStack Query
 
-## 🔥 Live API Endpoints (9 Total)
+## Live API Endpoints (9 Total)
 
 | Endpoint | Method | Description | Status |
 |----------|--------|-------------|--------|
-| `/api/health` | GET | Health check with Raydium connection status | ✅ |
-| `/api/pools` | GET | Get authentic Raydium liquidity pools | ✅ |
-| `/api/pools/:poolId` | GET | Get specific pool by ID | ✅ |
-| `/api/tokens` | GET | Get authentic token list from Raydium | ✅ |
-| `/api/tokens/:mint` | GET | Get specific token by mint address | ✅ |
-| `/api/swap/quote` | POST | Calculate authentic swap quotes | ✅ |
-| `/api/token-account/parse` | POST | Parse authentic token account data | ✅ |
-| `/api/metrics` | GET | API performance metrics | ✅ |
-| `/api/docs` | GET | Complete API documentation | ✅ |
+| `/api/health` | GET | Health check with Raydium connection status | Active |
+| `/api/pools` | GET | Get authentic Raydium liquidity pools | Active |
+| `/api/pools/:poolId` | GET | Get specific pool by ID | Active |
+| `/api/tokens` | GET | Get authentic token list from Raydium | Active |
+| `/api/tokens/:mint` | GET | Get specific token by mint address | Active |
+| `/api/swap/quote` | POST | Calculate authentic swap quotes | Active |
+| `/api/token-account/parse` | POST | Parse authentic token account data | Active |
+| `/api/metrics` | GET | API performance metrics | Active |
+| `/api/docs` | GET | Complete API documentation | Active |
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -64,7 +64,7 @@ npm run dev
 - **Web Interface:** http://localhost:5000
 - **API Documentation:** http://localhost:5000/docs
 
-## 📖 API Usage Examples
+## API Usage Examples
 
 ### Health Check
 ```bash
@@ -98,20 +98,20 @@ curl -X POST http://localhost:5000/api/token-account/parse \
   }'
 ```
 
-## 🔍 Data Sources
+## Data Sources
 
-### 100% Authentic Data
+### Authentic Data Sources
 - **Raydium SDK v2** - Direct integration for pools and tokens
 - **Jupiter API** - Live swap quotes with real market pricing
 - **Solana RPC** - Token account parsing with real blockchain data
 
-### Zero Mock Data
-- ❌ No synthetic pool data
-- ❌ No fake token information  
-- ❌ No simulated swap rates
-- ❌ No placeholder account balances
+### Data Integrity
+- No synthetic pool data
+- No fake token information  
+- No simulated swap rates
+- No placeholder account balances
 
-## 📊 API Response Examples
+## API Response Examples
 
 ### Health Check Response
 ```json
@@ -160,16 +160,16 @@ curl -X POST http://localhost:5000/api/token-account/parse \
 }
 ```
 
-## 🎨 Web Interface
+## Web Interface
 
-The microservice includes a beautiful web interface with:
+The microservice includes a comprehensive web interface with:
 
 - **Landing Page** - API overview and status
 - **Interactive Documentation** - Code examples in multiple languages
 - **Real-time Status** - Live API health monitoring
 - **Endpoint Explorer** - Test all 9 endpoints directly
 
-## ⚡ Performance
+## Performance
 
 | Metric | Value |
 |--------|--------|
@@ -178,7 +178,7 @@ The microservice includes a beautiful web interface with:
 | Uptime | 100% |
 | Error Rate | Minimal (due to real data validation) |
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 ```bash
@@ -191,21 +191,21 @@ PORT=5000
 - **RPC:** Public Solana RPC endpoints
 - **Commitment:** Confirmed
 
-## 🛡️ Security & Access
+## Security & Access
 
 - **Public API** - No authentication required
 - **CORS Enabled** - All origins allowed for development
 - **Rate Limiting** - Not implemented (can be added for production)
 - **SSL/TLS** - Configure reverse proxy for production HTTPS
 
-## 📚 Documentation
+## Documentation
 
 - **API Docs:** Available at `/docs` endpoint
 - **Interactive Examples:** Code samples in cURL, JavaScript, Python, Node.js
 - **Schema Validation:** All requests validated with Zod schemas
 - **Error Handling:** Comprehensive error responses with clear messages
 
-## 🚀 Deployment
+## Deployment
 
 Ready for deployment on any Node.js hosting platform:
 
@@ -214,7 +214,7 @@ Ready for deployment on any Node.js hosting platform:
 - **Railway** - One-click deployment
 - **Docker** - Containerization ready
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -222,11 +222,11 @@ Ready for deployment on any Node.js hosting platform:
 4. Test all endpoints
 5. Submit a pull request
 
-## 📄 License
+## License
 
 MIT License - feel free to use in your projects!
 
-## 🎯 Use Cases
+## Use Cases
 
 - **DeFi Applications** - Integrate Raydium functionality
 - **Trading Bots** - Real-time swap quotes and execution
@@ -234,7 +234,7 @@ MIT License - feel free to use in your projects!
 - **Analytics Platforms** - Market data and metrics
 - **Educational Projects** - Learn DeFi development
 
-## 🔗 Links
+## Links
 
 - **Live Demo:** http://localhost:5000
 - **API Documentation:** http://localhost:5000/docs
@@ -242,4 +242,4 @@ MIT License - feel free to use in your projects!
 
 ---
 
-**Built with ❤️ for the DeFi community | Powered by authentic Raydium SDK v2**
+**Built for the DeFi community | Powered by authentic Raydium SDK v2**
