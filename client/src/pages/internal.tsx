@@ -180,12 +180,12 @@ export default function InternalPage() {
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="docs">API Documentation</TabsTrigger>
-            <TabsTrigger value="quote">Get Quote</TabsTrigger>
-            <TabsTrigger value="swap">Execute Swap</TabsTrigger>
-            <TabsTrigger value="transfer">Transfer Tokens</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid w-full grid-cols-4 h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <TabsTrigger value="docs" className="text-sm font-medium">API Documentation</TabsTrigger>
+            <TabsTrigger value="quote" className="text-sm font-medium">Get Quote</TabsTrigger>
+            <TabsTrigger value="swap" className="text-sm font-medium">Execute Swap</TabsTrigger>
+            <TabsTrigger value="transfer" className="text-sm font-medium">Transfer Tokens</TabsTrigger>
           </TabsList>
 
           {/* API Documentation Tab */}
@@ -208,38 +208,42 @@ export default function InternalPage() {
                       <div className="border rounded-lg p-4">
                         <div className="flex items-center gap-2 mb-2">
                           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">GET</Badge>
-                          <code className="text-sm font-mono">/api/raydium/quote-swap</code>
+                          <code className="text-sm font-mono">/api/health</code>
                         </div>
                         <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Get authentic swap quotes from Raydium pools using real market data
+                          Service health check with API metrics and Raydium SDK status
                         </p>
-                        <div className="text-sm space-y-2">
-                          <div><strong>Query Parameters:</strong></div>
-                          <ul className="list-disc pl-5 space-y-1">
-                            <li><code>inMint</code> (string) - Input token mint address</li>
-                            <li><code>outMint</code> (string) - Output token mint address</li>
-                            <li><code>amount</code> (string) - Input amount in base units</li>
-                            <li><code>slippagePct</code> (number, optional) - Slippage percentage (default: 0.5)</li>
-                          </ul>
+                        <div className="text-sm">
+                          <div><strong>Response Example:</strong></div>
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "status": "healthy",
+  "timestamp": "2025-05-24T05:27:03.123Z",
+  "version": "1.0.0",
+  "metrics": {
+    "totalRequests": 150,
+    "averageResponseTime": 40,
+    "errorRate": 0,
+    "uptime": 100
+  }
+}`}</pre>
                         </div>
                       </div>
 
                       <div className="border rounded-lg p-4">
                         <div className="flex items-center gap-2 mb-2">
                           <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">POST</Badge>
-                          <code className="text-sm font-mono">/api/raydium/build-swap</code>
+                          <code className="text-sm font-mono">/api/internal/quote-swap</code>
                         </div>
                         <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Build unsigned swap transaction for user signing
+                          Get authentic swap quotes using Raydium SDK v2 integration
                         </p>
                         <div className="text-sm">
                           <div><strong>Request Body:</strong></div>
                           <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
-  "inMint": "So11111111111111111111111111111111111111112",
-  "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  "amount": "1000000",
-  "slippagePct": 0.5,
-  "ownerPubkey": "user_wallet_address"
+  "inputMint": "So11111111111111111111111111111111111111112",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "amountIn": "1000000000",
+  "slippagePct": "0.5"
 }`}</pre>
                         </div>
                       </div>
@@ -247,19 +251,21 @@ export default function InternalPage() {
                       <div className="border rounded-lg p-4 border-red-200">
                         <div className="flex items-center gap-2 mb-2">
                           <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">POST</Badge>
-                          <code className="text-sm font-mono">/api/raydium/execute-swap</code>
-                          <Badge variant="destructive" className="text-xs">Requires Private Key</Badge>
+                          <code className="text-sm font-mono">/api/internal/execute-swap</code>
+                          <Badge variant="destructive" className="text-xs">Internal Use Only</Badge>
                         </div>
                         <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Execute swap using configured private key on mainnet
+                          Execute swap transaction using private key authentication
                         </p>
                         <div className="text-sm">
                           <div><strong>Request Body:</strong></div>
                           <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
-  "inMint": "So11111111111111111111111111111111111111112",
-  "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  "amount": "1000000",
-  "slippagePct": 0.5
+  "inputMint": "So11111111111111111111111111111111111111112",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "amountIn": "1000000000",
+  "slippagePct": "0.5",
+  "ownerPubkey": "wallet_address",
+  "privateKey": "[1,2,3...] or base58_string"
 }`}</pre>
                         </div>
                       </div>
@@ -267,18 +273,36 @@ export default function InternalPage() {
                       <div className="border rounded-lg p-4 border-orange-200">
                         <div className="flex items-center gap-2 mb-2">
                           <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300">POST</Badge>
-                          <code className="text-sm font-mono">/api/raydium/transfer-token</code>
-                          <Badge variant="destructive" className="text-xs">Requires Private Key</Badge>
+                          <code className="text-sm font-mono">/api/internal/transfer-token</code>
+                          <Badge variant="destructive" className="text-xs">Internal Use Only</Badge>
                         </div>
                         <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                          Transfer SPL tokens between accounts
+                          Transfer SPL tokens between wallets with private key signing
                         </p>
                         <div className="text-sm">
                           <div><strong>Request Body:</strong></div>
                           <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
   "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  "toPubkey": "recipient_wallet_address",
+  "fromPrivateKey": "[1,2,3...] or base58_string",
+  "toPublicKey": "recipient_wallet_address",
   "amount": "1000000"
+}`}</pre>
+                        </div>
+                      </div>
+
+                      <div className="border rounded-lg p-4 border-blue-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">POST</Badge>
+                          <code className="text-sm font-mono">/api/internal/parse-token-account</code>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Parse token account data using Raydium SDK v2 context
+                        </p>
+                        <div className="text-sm">
+                          <div><strong>Request Body:</strong></div>
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "accountData": "base64_encoded_account_data",
+  "owner": "wallet_address"
 }`}</pre>
                         </div>
                       </div>
