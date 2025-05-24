@@ -51,7 +51,7 @@ export default function Header() {
               Status
             </button>
             <Link to="/docs">
-              <Button variant="outline" className="mr-3">
+              <Button className="bg-blue-500 text-white hover:bg-blue-600 mr-3">
                 <BookOpen className="w-4 h-4 mr-2" />
                 API Docs
               </Button>
