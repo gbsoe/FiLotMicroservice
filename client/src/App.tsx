@@ -23,6 +23,7 @@ function Router() {
       <Route path="/docs" component={DocsPage} />
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/terms" component={TermsPage} />
+      <Route path="/internal" component={InternalPage} />
       <Route component={NotFound} />
     </Switch>
   );
