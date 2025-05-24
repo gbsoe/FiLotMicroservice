@@ -7,8 +7,7 @@ const footerLinks = {
     { name: "API Documentation", href: "/docs" },
   ],
   contact: [
-    { name: "@Fi_lotbot", href: "https://twitter.com/Fi_lotbot" },
-    { name: "Telegram", href: "https://t.me/Fi_lotbot" },
+    { name: "@Fi_lotbot", href: "https://t.me/Fi_lotbot" },
     { name: "support@filot.io", href: "mailto:support@filot.io" },
     { name: "Dubai International Financial Centre, Dubai, UAE", href: "#" },
   ],
