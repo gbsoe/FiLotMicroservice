@@ -45,8 +45,18 @@ let raydiumService: RaydiumService | null = null;
  */
 export async function initRaydium(): Promise<RaydiumService> {
   try {
-    // Use environment variable or default to public RPC
-    const rpcUrl = process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
+    // Use secure Helius RPC with API key
+    const heliusApiKey = process.env.HELIUS_API_KEY;
+    let rpcUrl: string;
+    
+    if (heliusApiKey) {
+      rpcUrl = `https://mainnet.helius-rpc.com/?api-key=${heliusApiKey}`;
+      console.log('🔐 Using secure Helius RPC endpoint');
+    } else {
+      rpcUrl = process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
+      console.log('⚠️ Using fallback RPC endpoint - add HELIUS_API_KEY for better performance');
+    }
+    
     const connection = new Connection(rpcUrl, 'confirmed');
 
     // TODO: Replace with actual wallet public key for production use

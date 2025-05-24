@@ -567,7 +567,9 @@ Crawl-delay: 1`);
         });
       }
 
-      const quote = await quoteSwap(inputMint, outputMint, amountIn, slippagePct || 0.5);
+      // Convert slippagePct to number if it's a string
+      const slippageNumber = slippagePct ? parseFloat(slippagePct) : 0.5;
+      const quote = await quoteSwap(inputMint, outputMint, amountIn, slippageNumber);
       
       res.json({
         success: true,

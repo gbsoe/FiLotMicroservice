@@ -47,8 +47,8 @@ export const apiLogs = pgTable("api_logs", {
 export const swapQuoteSchema = z.object({
   inputMint: z.string().min(1, "Input token mint is required"),
   outputMint: z.string().min(1, "Output token mint is required"),
-  amount: z.string().min(1, "Amount is required"),
-  slippage: z.number().min(0).max(100).optional().default(0.5),
+  amountIn: z.union([z.string(), z.number()]).transform(val => typeof val === 'string' ? val : val.toString()),
+  slippagePct: z.union([z.string(), z.number()]).transform(val => typeof val === 'string' ? parseFloat(val) : val).optional().default(0.5),
 });
 
 // Token account parse request schema
