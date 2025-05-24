@@ -6,10 +6,10 @@ import { Info } from "lucide-react";
 import { useApiStatus } from "@/hooks/use-api-status";
 
 const endpointStatus = [
-  { path: "/api/health", responseTime: 95, status: "operational" },
-  { path: "/api/pools", responseTime: 127, status: "operational" },
-  { path: "/api/swap/quote", responseTime: 203, status: "operational" },
-  { path: "/api/tokens/:mint", responseTime: 156, status: "operational" },
+  { path: "/api/health", responseTime: 8, status: "operational" },
+  { path: "/api/pools", responseTime: 258, status: "operational" },
+  { path: "/api/tokens", responseTime: 195, status: "operational" },
+  { path: "/api/swap/quote", responseTime: 9, status: "operational" },
 ];
 
 export default function Status() {
