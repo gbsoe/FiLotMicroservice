@@ -127,30 +127,23 @@ export async function quoteSwap(
 
     console.log(`Getting swap quote: ${validated.amountIn.toString()} ${inputMint} -> ${outputMint}`);
 
-    // Use Raydium SDK to get swap quote with proper error handling
+    // Use Jupiter API for authentic swap quotes (aggregates Raydium and other DEXs)
     let quoteResult;
     try {
-      // Try different API methods based on Raydium SDK v2 structure
-      if (raydium.api && raydium.api.getSwapQuote) {
-        quoteResult = await raydium.api.getSwapQuote({
-          inputMint: inputMintPubkey,
-          outputMint: outputMintPubkey,
-          amount: validated.amountIn,
-          slippageBps: Math.floor(validated.slippagePct * 100),
-        });
-      } else if (raydium.quote && raydium.quote.swap) {
-        quoteResult = await raydium.quote.swap({
-          inputMint: inputMintPubkey,
-          outputMint: outputMintPubkey,
-          amount: validated.amountIn,
-          slippage: validated.slippagePct,
-        });
-      } else {
-        throw new Error('Raydium SDK quote method not available');
+      console.log('🚀 Fetching authentic quote from Jupiter API...');
+      const jupiterUrl = `https://quote-api.jup.ag/v6/quote?inputMint=${validated.inputMint}&outputMint=${validated.outputMint}&amount=${validated.amountIn}&slippageBps=${Math.floor(validated.slippagePct * 100)}`;
+      
+      const response = await fetch(jupiterUrl);
+      if (!response.ok) {
+        throw new Error(`Jupiter API error: ${response.status} ${response.statusText}`);
       }
-    } catch (sdkError) {
-      console.error('Raydium SDK error:', sdkError);
-      throw new Error(`Raydium SDK error: ${sdkError instanceof Error ? sdkError.message : 'Unknown error'}`);
+      
+      quoteResult = await response.json();
+      console.log('✅ Received authentic quote from Jupiter aggregator');
+      console.log('Jupiter response:', JSON.stringify(quoteResult, null, 2));
+    } catch (apiError) {
+      console.error('Jupiter API error:', apiError);
+      throw new Error(`Failed to get authentic quote: ${apiError instanceof Error ? apiError.message : 'API request failed'}`);
     }
 
     if (!quoteResult || (!quoteResult.outAmount && !quoteResult.amountOut)) {
@@ -164,12 +157,31 @@ export async function quoteSwap(
     const slippageMultiplier = (100 - validated.slippagePct) / 100;
     const minimumAmountOut = new BN(outAmount.toString()).mul(new BN(Math.floor(slippageMultiplier * 10000))).div(new BN(10000));
 
+    // Parse Jupiter response data safely
+    const outAmount = new BN(quoteResult.outAmount);
+    const otherAmountThreshold = quoteResult.otherAmountThreshold ? new BN(quoteResult.otherAmountThreshold) : outAmount;
+    
+    // Extract fees safely
+    const platformFee = quoteResult.platformFee?.amount ? new BN(quoteResult.platformFee.amount) : new BN(0);
+    const routingFee = quoteResult.routingFee?.amount ? new BN(quoteResult.routingFee.amount) : new BN(0);
+    const totalFee = platformFee.add(routingFee);
+    
+    // Extract price impact safely
+    const priceImpact = quoteResult.priceImpactPct ? parseFloat(quoteResult.priceImpactPct) : 0.05;
+    
+    // Build route from marketplace data safely
+    const route = quoteResult.routePlan?.map((step: any) => 
+      step.swapInfo?.label || step.percent?.toString() || 'DEX'
+    ).filter(Boolean).slice(0, 5) || [validated.inputMint.slice(0, 8), validated.outputMint.slice(0, 8)];
+
+    console.log(`✅ Authentic quote: ${outAmount.toString()} output, ${priceImpact}% impact, via ${route.join(' → ')}`);
+
     return {
-      amountOut: new BN(quoteResult.outAmount.toString()),
-      minimumAmountOut,
-      fee: new BN(quoteResult.fee?.toString() || '0'),
-      priceImpact: quoteResult.priceImpact || 0,
-      route: quoteResult.routePlan?.map(step => step.ammKey.toString()) || []
+      amountOut: outAmount,
+      minimumAmountOut: otherAmountThreshold,
+      fee: totalFee,
+      priceImpact,
+      route
     };
 
   } catch (error) {
