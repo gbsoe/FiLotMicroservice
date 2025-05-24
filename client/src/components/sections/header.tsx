@@ -73,43 +73,12 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent>
               <div className="flex flex-col space-y-4 mt-8">
-                <button 
-                  onClick={() => scrollToSection('overview')}
-                  className="text-left text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Overview
-                </button>
-                <button 
-                  onClick={() => scrollToSection('endpoints')}
-                  className="text-left text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Endpoints
-                </button>
-                <button 
-                  onClick={() => scrollToSection('examples')}
-                  className="text-left text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Examples
-                </button>
-                <button 
-                  onClick={() => scrollToSection('status')}
-                  className="text-left text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Status
-                </button>
                 <Link to="/docs">
                   <Button className="bg-blue-500 text-white hover:bg-blue-600 justify-start w-full">
                     <BookOpen className="w-4 h-4 mr-2" />
-                    API Docs
+                    API Documentation
                   </Button>
                 </Link>
-                <Button 
-                  onClick={() => scrollToSection('examples')}
-                  className="bg-blue-600 text-white hover:bg-blue-700 justify-start"
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  Try Now
-                </Button>
               </div>
             </SheetContent>
           </Sheet>
