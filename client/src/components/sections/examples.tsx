@@ -52,7 +52,7 @@ curl -X GET https://filotmicroservice.replit.app/api/health
 curl -X GET https://filotmicroservice.replit.app/api/tokens/So11111111111111111111111111111111111111112
 
 # Request swap quote
-curl -X POST /api/swap/quote \\
+curl -X POST https://filotmicroservice.replit.app/api/swap/quote \\
   -H "Content-Type: application/json" \\
   -d '{
     "inputMint": "So11111111111111111111111111111111111111112",
