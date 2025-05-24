@@ -14,9 +14,9 @@ const footerLinks = {
     { name: "Dubai International Financial Centre, Dubai, UAE", href: "#" },
   ],
   ecosystem: [
+    { name: "FiLotAnalytics", href: "https://filotanalytics.replit.app/" },
     { name: "FiLotSense", href: "https://filotsense.replit.app/" },
     { name: "LA! Token", href: "https://crazyrichla.replit.app/" },
-    { name: "FiLotAnalytics", href: "https://filotanalytics.replit.app/" },
   ],
 };
 
