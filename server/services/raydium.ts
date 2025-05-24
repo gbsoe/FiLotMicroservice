@@ -53,9 +53,11 @@ export async function initRaydium(): Promise<RaydiumService> {
       rpcUrl = `https://mainnet.helius-rpc.com/?api-key=${heliusApiKey}`;
       console.log('🔐 Using secure Helius RPC endpoint');
     } else {
-      rpcUrl = process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
-      console.log('⚠️ Using fallback RPC endpoint - add HELIUS_API_KEY for better performance');
+      rpcUrl = 'https://api.mainnet-beta.solana.com';
+      console.log('⚠️ Using public RPC endpoint - add HELIUS_API_KEY for better performance');
     }
+    
+    console.log('RPC URL being used:', rpcUrl.replace(/api-key=[^&]+/, 'api-key=***'));
     
     const connection = new Connection(rpcUrl, 'confirmed');
 
