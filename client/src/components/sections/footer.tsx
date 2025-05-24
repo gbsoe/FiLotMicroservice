@@ -1,5 +1,5 @@
 import { ArrowRightLeft } from "lucide-react";
-import { SiGithub, SiX, SiDiscord } from "react-icons/si";
+import { SiX, SiTelegram } from "react-icons/si";
 import { Link } from "wouter";
 
 const footerLinks = {
@@ -46,14 +46,11 @@ export default function Footer() {
               Built with Node.js and Raydium SDK v2 for informed trading decisions.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                <SiGithub className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-slate-400 hover:text-white transition-colors">
+              <a href="https://x.com/crazyrichla" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
                 <SiX className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                <SiDiscord className="w-5 h-5" />
+              <a href="https://t.me/Fi_lotbot" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
+                <SiTelegram className="w-5 h-5" />
               </a>
             </div>
           </div>
