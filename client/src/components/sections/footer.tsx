@@ -39,7 +39,7 @@ export default function Footer() {
               <h3 className="text-xl font-semibold">FiLotMicroservice</h3>
             </div>
             <p className="text-slate-400 mb-6 max-w-md">
-              Professional-grade microservice API for precision investing. 
+              FiLot microservice API for precision investing. 
               Built with Node.js and Raydium SDK v2 for informed trading decisions.
             </p>
             <div className="flex space-x-4">
