@@ -3,9 +3,16 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { swapQuoteSchema, tokenAccountParseSchema } from "@shared/schema";
 import cors from "cors";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey, Keypair } from "@solana/web3.js";
 import { Raydium } from "@raydium-io/raydium-sdk-v2";
 import BN from "bn.js";
+import { 
+  quoteSwap, 
+  executeSwap, 
+  transferToken, 
+  createKeypairFromPrivateKey,
+  isValidSolanaAddress 
+} from "./services/raydium.js";
 
 // Authentic Raydium SDK v2 integration
 class RaydiumService {
@@ -546,6 +553,148 @@ Crawl-delay: 1`);
         },
       ],
     });
+  });
+
+  // Internal API routes for swap functionality
+  // Internal quote swap - uses authentic Raydium SDK
+  app.post("/api/internal/quote-swap", async (req, res) => {
+    try {
+      const { inputMint, outputMint, amountIn, slippagePct } = req.body;
+      
+      if (!inputMint || !outputMint || !amountIn) {
+        return res.status(400).json({ 
+          error: "Missing required fields: inputMint, outputMint, amountIn" 
+        });
+      }
+
+      const quote = await quoteSwap(inputMint, outputMint, amountIn, slippagePct || 0.5);
+      
+      res.json({
+        success: true,
+        quote: {
+          amountOut: quote.amountOut.toString(),
+          minimumAmountOut: quote.minimumAmountOut.toString(),
+          fee: quote.fee.toString(),
+          priceImpact: quote.priceImpact,
+          route: quote.route
+        }
+      });
+    } catch (error) {
+      console.error("Internal quote swap error:", error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : "Quote swap failed" 
+      });
+    }
+  });
+
+  // Internal execute swap - performs actual transaction
+  app.post("/api/internal/execute-swap", async (req, res) => {
+    try {
+      const { inputMint, outputMint, amountIn, slippagePct, ownerPubkey, privateKey } = req.body;
+      
+      if (!inputMint || !outputMint || !amountIn || !ownerPubkey || !privateKey) {
+        return res.status(400).json({ 
+          error: "Missing required fields: inputMint, outputMint, amountIn, ownerPubkey, privateKey" 
+        });
+      }
+
+      // Convert private key to Keypair
+      let ownerKeypair: Keypair;
+      try {
+        if (typeof privateKey === 'string') {
+          // Assume base58 encoded private key
+          const bs58 = await import('bs58');
+          const secretKey = bs58.default.decode(privateKey);
+          ownerKeypair = Keypair.fromSecretKey(secretKey);
+        } else if (Array.isArray(privateKey)) {
+          // Array of numbers
+          ownerKeypair = createKeypairFromPrivateKey(privateKey);
+        } else {
+          throw new Error("Invalid private key format");
+        }
+      } catch (error) {
+        return res.status(400).json({ 
+          error: "Invalid private key format. Use base58 string or number array." 
+        });
+      }
+
+      // Verify public key matches
+      if (ownerKeypair.publicKey.toString() !== ownerPubkey) {
+        return res.status(400).json({ 
+          error: "Private key does not match provided public key" 
+        });
+      }
+
+      const txid = await executeSwap(
+        inputMint, 
+        outputMint, 
+        amountIn, 
+        slippagePct || 0.5, 
+        ownerKeypair
+      );
+      
+      res.json({
+        success: true,
+        txid,
+        explorerUrl: `https://solscan.io/tx/${txid}`
+      });
+    } catch (error) {
+      console.error("Internal execute swap error:", error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : "Swap execution failed" 
+      });
+    }
+  });
+
+  // Internal token transfer
+  app.post("/api/internal/transfer-token", async (req, res) => {
+    try {
+      const { mint, fromPrivateKey, toPublicKey, amount } = req.body;
+      
+      if (!mint || !fromPrivateKey || !toPublicKey || !amount) {
+        return res.status(400).json({ 
+          error: "Missing required fields: mint, fromPrivateKey, toPublicKey, amount" 
+        });
+      }
+
+      // Convert private key to Keypair
+      let fromKeypair: Keypair;
+      try {
+        if (typeof fromPrivateKey === 'string') {
+          const bs58 = await import('bs58');
+          const secretKey = bs58.default.decode(fromPrivateKey);
+          fromKeypair = Keypair.fromSecretKey(secretKey);
+        } else if (Array.isArray(fromPrivateKey)) {
+          fromKeypair = createKeypairFromPrivateKey(fromPrivateKey);
+        } else {
+          throw new Error("Invalid private key format");
+        }
+      } catch (error) {
+        return res.status(400).json({ 
+          error: "Invalid private key format. Use base58 string or number array." 
+        });
+      }
+
+      // Validate recipient address
+      if (!isValidSolanaAddress(toPublicKey)) {
+        return res.status(400).json({ 
+          error: "Invalid recipient public key" 
+        });
+      }
+
+      const txid = await transferToken(mint, fromKeypair, toPublicKey, amount);
+      
+      res.json({
+        success: true,
+        txid,
+        explorerUrl: `https://solscan.io/tx/${txid}`
+      });
+    } catch (error) {
+      console.error("Internal token transfer error:", error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : "Token transfer failed" 
+      });
+    }
   });
 
   return httpServer;

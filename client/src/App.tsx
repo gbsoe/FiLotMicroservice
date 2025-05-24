@@ -8,6 +8,7 @@ import DocsPage from "@/pages/docs";
 import PrivacyPage from "@/pages/privacy";
 import TermsPage from "@/pages/terms";
 import NotFound from "@/pages/not-found";
+import InternalPage from "@/pages/internal";
 import { useEffect } from "react";
 import { initGA } from "./lib/analytics";
 import { useAnalytics } from "./hooks/use-analytics";
