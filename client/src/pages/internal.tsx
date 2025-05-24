@@ -180,42 +180,54 @@ export default function InternalPage() {
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4 h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-            <TabsTrigger value="docs" className="text-sm font-medium">API Documentation</TabsTrigger>
-            <TabsTrigger value="quote" className="text-sm font-medium">Get Quote</TabsTrigger>
-            <TabsTrigger value="swap" className="text-sm font-medium">Execute Swap</TabsTrigger>
-            <TabsTrigger value="transfer" className="text-sm font-medium">Transfer Tokens</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1">
+            <TabsTrigger value="docs" className="text-xs md:text-sm font-medium px-1 py-2 md:px-3 md:py-3 rounded-md">
+              <span className="hidden md:inline">API Documentation</span>
+              <span className="md:hidden">Docs</span>
+            </TabsTrigger>
+            <TabsTrigger value="quote" className="text-xs md:text-sm font-medium px-1 py-2 md:px-3 md:py-3 rounded-md">
+              <span className="hidden md:inline">Get Quote</span>
+              <span className="md:hidden">Quote</span>
+            </TabsTrigger>
+            <TabsTrigger value="swap" className="text-xs md:text-sm font-medium px-1 py-2 md:px-3 md:py-3 rounded-md">
+              <span className="hidden md:inline">Execute Swap</span>
+              <span className="md:hidden">Swap</span>
+            </TabsTrigger>
+            <TabsTrigger value="transfer" className="text-xs md:text-sm font-medium px-1 py-2 md:px-3 md:py-3 rounded-md">
+              <span className="hidden md:inline">Transfer Tokens</span>
+              <span className="md:hidden">Transfer</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* API Documentation Tab */}
           <TabsContent value="docs">
-            <div className="space-y-6">
+            <div className="space-y-4">
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Swap Transaction API Documentation</CardTitle>
-                  <p className="text-slate-600 dark:text-slate-400">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg md:text-2xl">Swap Transaction API Documentation</CardTitle>
+                  <p className="text-sm md:text-base text-slate-600 dark:text-slate-400">
                     Complete guide to the FiLotMicroservice Swap Transaction API with authentic Raydium SDK v2 integration
                   </p>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-4">
                   
                   {/* API Endpoints Section */}
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">API Endpoints</h3>
-                    <div className="space-y-4">
+                    <h3 className="text-lg md:text-xl font-semibold mb-3">API Endpoints</h3>
+                    <div className="space-y-3">
                       
-                      <div className="border rounded-lg p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">GET</Badge>
-                          <code className="text-sm font-mono">/api/health</code>
+                      <div className="border rounded-lg p-3 md:p-4">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300 text-xs">GET</Badge>
+                          <code className="text-xs md:text-sm font-mono break-all">/api/health</code>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-3">
                           Service health check with API metrics and Raydium SDK status
                         </p>
-                        <div className="text-sm">
+                        <div className="text-xs md:text-sm">
                           <div><strong>Response Example:</strong></div>
-                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
   "status": "healthy",
   "timestamp": "2025-05-24T05:27:03.123Z",
   "version": "1.0.0",
@@ -229,17 +241,17 @@ export default function InternalPage() {
                         </div>
                       </div>
 
-                      <div className="border rounded-lg p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">POST</Badge>
-                          <code className="text-sm font-mono">/api/internal/quote-swap</code>
+                      <div className="border rounded-lg p-3 md:p-4">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 text-xs">POST</Badge>
+                          <code className="text-xs md:text-sm font-mono break-all">/api/internal/quote-swap</code>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 mb-3">
                           Get authentic swap quotes using Raydium SDK v2 integration
                         </p>
-                        <div className="text-sm">
+                        <div className="text-xs md:text-sm">
                           <div><strong>Request Body:</strong></div>
-                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-2 md:p-3 rounded mt-2 text-xs overflow-x-auto">{`{
   "inputMint": "So11111111111111111111111111111111111111112",
   "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   "amountIn": "1000000000",
