@@ -1,0 +1,88 @@
+I need you to add and scaffold the following project structure and functionality to for internal use 
+
+
+This API will:
+1. Quote token swaps
+2. Build swap transactions
+3. Execute swap transactions
+4. Transfer SPL tokens
+5. Interact with Solana wallets using private keys or adapters
+
+---
+
+**Project Structure:**
+- package.json with dependencies:
+  - "@raydium-io/raydium-sdk-v2"
+  - "@solana/web3.js"
+  - "@solana/spl-token"
+  - "express"
+  - "zod"
+  - "dotenv"
+  - "helmet"
+  - "winston"
+  - "express-rate-limit"
+  - "typescript"
+  - "ts-node-dev"
+
+- tsconfig.json targeting Node.js 20+
+- .env.example file with:
+  - SOLANA_RPC_URL
+  - PRIVATE_KEY (base58 or JSON array)
+
+---
+
+**Core Files:**
+
+1. **src/index.ts**
+   - Load environment variables
+   - Set up Express app with helmet, CORS, JSON parser, rate-limiting
+   - Mount router from `src/routes/raydium.ts` at `/api/raydium`
+   - Start server with `app.listen(process.env.PORT || 3000)`
+
+2. **src/routes/raydium.ts**
+   Define these REST endpoints:
+   - `GET /api/raydium/quote-swap`
+     - Query: `inMint`, `outMint`, `amount`, `slippagePct`
+     - Returns quote using `raydium.quote.swap()`
+   - `POST /api/raydium/build-swap`
+     - Body: `{ inMint, outMint, amount, slippagePct, ownerPubkey }`
+     - Builds swap transaction using `raydium.swap()` or `createSwapTransaction()`
+   - `POST /api/raydium/execute-swap`
+     - Body: `{ inMint, outMint, amount, slippagePct }`
+     - Uses `PRIVATE_KEY` from `.env` to sign and send transaction
+   - `POST /api/raydium/transfer-token`
+     - Body: `{ mint, toPubkey, amount }`
+     - Uses SPL Token to transfer tokens using `PRIVATE_KEY`
+
+   - Validate inputs using Zod
+   - Wrap logic in try/catch and return JSON response
+
+3. **src/services/raydium.ts**
+   Export functions:
+   - `initRaydium()`: Initialize Raydium SDK with a Solana connection
+   - `quoteSwap(...)`: Calls `raydium.quote.swap()`
+   - `buildSwapTx(...)`: Builds unsigned transaction using `raydium.swap()`
+   - `executeSwap(...)`: Signs and sends swap transaction with Keypair
+   - `transferToken(...)`: Sends SPL token using `createTransferInstruction()`
+
+   Add `// TODO` where secrets or wallet adapter logic is required
+   Confirm in comments: Raydium SDK V2 can build real transactions; signing is done using Keypair or wallet adapter.
+
+4. **src/config.ts**
+   - Load and validate environment variables using Zod
+   - Export constants like RPC URL, PRIVATE_KEY, etc.
+
+5. **src/logger.ts**
+   - Configure Winston logger for structured logging to console
+
+6. **src/models.ts**
+   - TypeScript interfaces/types for responses like `QuoteResult`
+
+---
+
+**After Generation:**
+- Fill in `// TODO` placeholders for wallet/private key logic
+- Add real wallet integration if used in browser
+- Store PRIVATE_KEY securely in Replit Secrets or `.env`
+
+Generate all files with full contents and correct file paths.
