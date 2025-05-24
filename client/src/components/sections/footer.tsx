@@ -3,10 +3,7 @@ import { SiGithub, SiX, SiDiscord } from "react-icons/si";
 
 const footerLinks = {
   resources: [
-    { name: "Documentation", href: "#endpoints" },
-    { name: "API Reference", href: "#endpoints" },
-    { name: "Code Examples", href: "#examples" },
-    { name: "SDK Guide", href: "#examples" },
+    { name: "API Documentation", href: "/docs" },
   ],
   community: [
     { name: "GitHub Issues", href: "#" },
