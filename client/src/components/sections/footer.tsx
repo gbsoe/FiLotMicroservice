@@ -58,9 +58,9 @@ export default function Footer() {
               {footerLinks.resources.map((link, index) => (
                 <li key={index}>
                   <Link href={link.href}>
-                    <a className="hover:text-white transition-colors">
+                    <span className="hover:text-white transition-colors cursor-pointer">
                       {link.name}
-                    </a>
+                    </span>
                   </Link>
                 </li>
               ))}

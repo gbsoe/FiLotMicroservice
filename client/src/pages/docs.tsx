@@ -206,22 +206,22 @@ getData();`;
   const currentEndpoint = endpoints.find(e => e.id === activeEndpoint) || endpoints[0];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between mb-4">
+      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <ArrowRightLeft className="text-white w-5 h-5" />
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                <ArrowRightLeft className="text-white w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-slate-900">API Documentation</h1>
-                <p className="text-slate-600">FiLotMicroservice - Precision Investing API</p>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">API Documentation</h1>
+                <p className="text-slate-600 dark:text-slate-300 mt-1">FiLotMicroservice - Precision Investing API</p>
               </div>
             </div>
             <Link to="/">
-              <Button variant="outline">
+              <Button variant="outline" className="whitespace-nowrap">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Back to Home
               </Button>
@@ -240,87 +240,97 @@ getData();`;
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">All 9 Endpoints</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="space-y-1">
-                  {endpoints.map((endpoint) => (
-                    <button
-                      key={endpoint.id}
-                      onClick={() => setActiveEndpoint(endpoint.id)}
-                      className={`w-full text-left px-4 py-3 rounded-none border-0 transition-colors ${
-                        activeEndpoint === endpoint.id
-                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                          : 'text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium text-sm">{endpoint.title}</span>
-                        <Badge 
-                          className={`text-xs ${
-                            endpoint.method === 'GET' 
-                              ? 'bg-emerald-100 text-emerald-800' 
-                              : 'bg-blue-100 text-blue-800'
-                          }`}
-                        >
-                          {endpoint.method}
-                        </Badge>
-                      </div>
-                      <div className="text-xs text-slate-500 mt-1 font-mono">
-                        {endpoint.path}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          <div className="xl:col-span-1">
+            <div className="sticky top-8">
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg text-slate-900 dark:text-white">All 9 Endpoints</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="space-y-0.5">
+                    {endpoints.map((endpoint) => (
+                      <button
+                        key={endpoint.id}
+                        onClick={() => setActiveEndpoint(endpoint.id)}
+                        className={`w-full text-left px-4 py-3 transition-all duration-200 ${
+                          activeEndpoint === endpoint.id
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-r-3 border-blue-600'
+                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-medium text-sm">{endpoint.title}</span>
+                          <Badge 
+                            variant={endpoint.method === 'GET' ? 'default' : 'secondary'}
+                            className={`text-xs font-medium ${
+                              endpoint.method === 'GET' 
+                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' 
+                                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                            }`}
+                          >
+                            {endpoint.method}
+                          </Badge>
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                          {endpoint.path}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl flex items-center space-x-3">
-                  <Badge className={
-                    currentEndpoint.method === 'GET' 
-                      ? 'bg-emerald-100 text-emerald-800' 
-                      : 'bg-blue-100 text-blue-800'
-                  }>
+          <div className="xl:col-span-3 space-y-6">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <Badge 
+                    variant={currentEndpoint.method === 'GET' ? 'default' : 'secondary'}
+                    className={`w-fit text-sm font-medium px-3 py-1 ${
+                      currentEndpoint.method === 'GET' 
+                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' 
+                        : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                    }`}
+                  >
                     {currentEndpoint.method}
                   </Badge>
-                  <span className="font-mono">{currentEndpoint.path}</span>
-                </CardTitle>
-                <p className="text-slate-600 mt-2">{currentEndpoint.description}</p>
+                  <CardTitle className="text-xl sm:text-2xl font-mono text-slate-900 dark:text-white break-all">
+                    {currentEndpoint.path}
+                  </CardTitle>
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 mt-3 text-base leading-relaxed">
+                  {currentEndpoint.description}
+                </p>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">Code Examples</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Code Examples</h3>
                   <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
-                    <TabsList className="grid w-full grid-cols-4">
-                      <TabsTrigger value="curl">cURL</TabsTrigger>
-                      <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-                      <TabsTrigger value="python">Python</TabsTrigger>
-                      <TabsTrigger value="nodejs">Node.js</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6">
+                      <TabsTrigger value="curl" className="text-sm">cURL</TabsTrigger>
+                      <TabsTrigger value="javascript" className="text-sm">JavaScript</TabsTrigger>
+                      <TabsTrigger value="python" className="text-sm">Python</TabsTrigger>
+                      <TabsTrigger value="nodejs" className="text-sm">Node.js</TabsTrigger>
                     </TabsList>
                     
                     {['curl', 'javascript', 'python', 'nodejs'].map((language) => (
-                      <TabsContent key={language} value={language}>
-                        <div className="relative">
+                      <TabsContent key={language} value={language} className="mt-0">
+                        <div className="relative group">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => copyToClipboard(getEndpointExample(currentEndpoint, language))}
-                            className="absolute top-2 right-2 z-10"
+                            className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 hover:bg-slate-700 text-white"
                           >
                             <Copy className="w-4 h-4" />
                           </Button>
-                          <pre className="bg-slate-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
-                            <code>{getEndpointExample(currentEndpoint, language)}</code>
+                          <pre className="bg-slate-900 dark:bg-slate-950 text-green-400 dark:text-green-300 p-6 rounded-lg overflow-x-auto text-sm leading-relaxed shadow-inner">
+                            <code className="font-mono">{getEndpointExample(currentEndpoint, language)}</code>
                           </pre>
                         </div>
                       </TabsContent>
