@@ -1,27 +1,10 @@
-import { ArrowRightLeft } from "lucide-react";
-import { Link } from "wouter";
+import Header from "@/components/sections/header";
+import Footer from "@/components/sections/footer";
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/">
-              <div className="flex items-center space-x-4 cursor-pointer">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <ArrowRightLeft className="text-white w-4 h-4" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-semibold text-slate-900">FiLotMicroservice</h1>
-                  <p className="text-xs text-slate-500">Precision Investing</p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -100,6 +83,8 @@ export default function PrivacyPage() {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }
