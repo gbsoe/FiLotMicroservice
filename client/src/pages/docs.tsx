@@ -236,13 +236,31 @@ getData();`;
             </Link>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <Badge className="bg-emerald-100 text-emerald-800">
-              <CheckCircle className="w-3 h-3 mr-1" />
-              Live API
-            </Badge>
-            <Badge variant="outline">Version 1.0.0</Badge>
-            <Badge variant="outline">No Authentication Required</Badge>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex items-center space-x-4">
+              <Badge className="bg-emerald-100 text-emerald-800">
+                <CheckCircle className="w-3 h-3 mr-1" />
+                Live API
+              </Badge>
+              <Badge variant="outline">Version 1.0.0</Badge>
+              <Badge variant="outline">No Authentication Required</Badge>
+            </div>
+            <div className="flex gap-3">
+              <a 
+                href="/CLIENT_INTEGRATION_GUIDE.md" 
+                download="FiLotMicroservice_Integration_Guide.md"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors no-underline"
+              >
+                Download Guide (MD)
+              </a>
+              <a 
+                href="/FiLotMicroservice_Integration_Guide.html" 
+                target="_blank"
+                className="inline-flex items-center px-4 py-2 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-700 transition-colors no-underline"
+              >
+                View PDF Version
+              </a>
+            </div>
           </div>
         </div>
       </div>
