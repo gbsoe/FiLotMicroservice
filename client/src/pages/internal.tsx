@@ -12,7 +12,7 @@ import Header from "@/components/sections/header";
 import Footer from "@/components/sections/footer";
 
 export default function InternalPage() {
-  const [activeTab, setActiveTab] = useState("quote");
+  const [activeTab, setActiveTab] = useState("docs");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
   const { toast } = useToast();
