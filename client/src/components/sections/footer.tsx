@@ -8,12 +8,14 @@ const footerLinks = {
   ],
   contact: [
     { name: "@Fi_lotbot", href: "https://twitter.com/Fi_lotbot" },
+    { name: "Telegram", href: "https://t.me/Fi_lotbot" },
     { name: "support@filot.io", href: "mailto:support@filot.io" },
     { name: "Dubai International Financial Centre, Dubai, UAE", href: "#" },
   ],
   ecosystem: [
-    { name: "FiLotsense", href: "#" },
-    { name: "LA! Token", href: "#" },
+    { name: "FiLotSense", href: "https://filotsense.replit.app/" },
+    { name: "LA! Token", href: "https://crazyrichla.replit.app/" },
+    { name: "FiLotAnalytics", href: "https://filotanalytics.replit.app/" },
   ],
 };
 
