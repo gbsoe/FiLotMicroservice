@@ -181,11 +181,252 @@ export default function InternalPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="docs">API Documentation</TabsTrigger>
             <TabsTrigger value="quote">Get Quote</TabsTrigger>
             <TabsTrigger value="swap">Execute Swap</TabsTrigger>
             <TabsTrigger value="transfer">Transfer Tokens</TabsTrigger>
           </TabsList>
+
+          {/* API Documentation Tab */}
+          <TabsContent value="docs">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl">Swap Transaction API Documentation</CardTitle>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Complete guide to the FiLotMicroservice Swap Transaction API with authentic Raydium SDK v2 integration
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  
+                  {/* API Endpoints Section */}
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">API Endpoints</h3>
+                    <div className="space-y-4">
+                      
+                      <div className="border rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">GET</Badge>
+                          <code className="text-sm font-mono">/api/raydium/quote-swap</code>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Get authentic swap quotes from Raydium pools using real market data
+                        </p>
+                        <div className="text-sm space-y-2">
+                          <div><strong>Query Parameters:</strong></div>
+                          <ul className="list-disc pl-5 space-y-1">
+                            <li><code>inMint</code> (string) - Input token mint address</li>
+                            <li><code>outMint</code> (string) - Output token mint address</li>
+                            <li><code>amount</code> (string) - Input amount in base units</li>
+                            <li><code>slippagePct</code> (number, optional) - Slippage percentage (default: 0.5)</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="border rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">POST</Badge>
+                          <code className="text-sm font-mono">/api/raydium/build-swap</code>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Build unsigned swap transaction for user signing
+                        </p>
+                        <div className="text-sm">
+                          <div><strong>Request Body:</strong></div>
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "inMint": "So11111111111111111111111111111111111111112",
+  "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "amount": "1000000",
+  "slippagePct": 0.5,
+  "ownerPubkey": "user_wallet_address"
+}`}</pre>
+                        </div>
+                      </div>
+
+                      <div className="border rounded-lg p-4 border-red-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">POST</Badge>
+                          <code className="text-sm font-mono">/api/raydium/execute-swap</code>
+                          <Badge variant="destructive" className="text-xs">Requires Private Key</Badge>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Execute swap using configured private key on mainnet
+                        </p>
+                        <div className="text-sm">
+                          <div><strong>Request Body:</strong></div>
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "inMint": "So11111111111111111111111111111111111111112",
+  "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "amount": "1000000",
+  "slippagePct": 0.5
+}`}</pre>
+                        </div>
+                      </div>
+
+                      <div className="border rounded-lg p-4 border-orange-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300">POST</Badge>
+                          <code className="text-sm font-mono">/api/raydium/transfer-token</code>
+                          <Badge variant="destructive" className="text-xs">Requires Private Key</Badge>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                          Transfer SPL tokens between accounts
+                        </p>
+                        <div className="text-sm">
+                          <div><strong>Request Body:</strong></div>
+                          <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded mt-2 text-xs overflow-x-auto">{`{
+  "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "toPubkey": "recipient_wallet_address",
+  "amount": "1000000"
+}`}</pre>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* Integration Examples Section */}
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">Integration Examples</h3>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2">JavaScript/Node.js</h4>
+                        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">{`// Get swap quote
+const response = await fetch('/api/raydium/quote-swap?' + 
+  new URLSearchParams({
+    inMint: 'So11111111111111111111111111111111111111112',
+    outMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    amount: '1000000',
+    slippagePct: '0.5'
+  }));
+
+const quote = await response.json();
+console.log('Swap quote:', quote.data);`}</pre>
+                      </div>
+
+                      <div>
+                        <h4 className="font-medium mb-2">Python</h4>
+                        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">{`import requests
+
+# Get swap quote
+response = requests.get('/api/raydium/quote-swap', params={
+    'inMint': 'So11111111111111111111111111111111111111112',
+    'outMint': 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    'amount': '1000000',
+    'slippagePct': 0.5
+})
+
+quote = response.json()
+print('Swap quote:', quote['data'])`}</pre>
+                      </div>
+
+                      <div>
+                        <h4 className="font-medium mb-2">cURL</h4>
+                        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">{`# Get swap quote
+curl "/api/raydium/quote-swap?inMint=So11111111111111111111111111111111111111112&outMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=1000000&slippagePct=0.5"
+
+# Execute swap (requires PRIVATE_KEY)
+curl -X POST /api/raydium/execute-swap \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "inMint": "So11111111111111111111111111111111111111112",
+    "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "amount": "1000000",
+    "slippagePct": 0.5
+  }'`}</pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Response Format Section */}
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">Response Format</h3>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Success Response</h4>
+                        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">{`{
+  "success": true,
+  "data": {
+    // Response data specific to endpoint
+  },
+  "timestamp": "2025-05-24T05:11:30.123Z"
+}`}</pre>
+                      </div>
+
+                      <div>
+                        <h4 className="font-medium mb-2">Error Response</h4>
+                        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded text-sm overflow-x-auto">{`{
+  "success": false,
+  "error": "Error description",
+  "timestamp": "2025-05-24T05:11:30.123Z"
+}`}</pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Environment Configuration Section */}
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">Environment Configuration</h3>
+                    <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                      <h4 className="font-medium mb-2">Required Environment Variables</h4>
+                      <pre className="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm overflow-x-auto">{`# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Solana Configuration  
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+
+# Private Key (Required for execute/transfer endpoints)
+PRIVATE_KEY=[123,45,67,89,...]  # JSON array or Base58 string
+
+# Logging
+LOG_LEVEL=info`}</pre>
+                    </div>
+                  </div>
+
+                  {/* Security Notes Section */}
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">Security Notes</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded">
+                        <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+                        <div className="text-sm">
+                          <div className="font-medium text-red-800 dark:text-red-200">Private Key Security</div>
+                          <div className="text-red-700 dark:text-red-300">
+                            Execute and transfer endpoints require PRIVATE_KEY environment variable. Never expose private keys in production.
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800 rounded">
+                        <Shield className="w-5 h-5 text-orange-500 mt-0.5" />
+                        <div className="text-sm">
+                          <div className="font-medium text-orange-800 dark:text-orange-200">Rate Limiting</div>
+                          <div className="text-orange-700 dark:text-orange-300">
+                            Rate limiting is enabled by default: 100 requests per 15 minutes per IP address.
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded">
+                        <Wallet className="w-5 h-5 text-blue-500 mt-0.5" />
+                        <div className="text-sm">
+                          <div className="font-medium text-blue-800 dark:text-blue-200">Wallet Integration</div>
+                          <div className="text-blue-700 dark:text-blue-300">
+                            Consider implementing wallet adapters for user transactions in production environments.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           {/* Quote Tab */}
           <TabsContent value="quote">
