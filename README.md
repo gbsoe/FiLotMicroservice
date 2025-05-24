@@ -106,10 +106,10 @@ curl -X POST http://localhost:5000/api/token-account/parse \
 - **Solana RPC** - Token account parsing with real blockchain data
 
 ### Data Integrity
-- No synthetic pool data
-- No fake token information  
-- No simulated swap rates
-- No placeholder account balances
+- Direct integration with verified Raydium pools
+- Authentic token metadata from official sources
+- Real-time market pricing and swap calculations
+- Live blockchain account data processing
 
 ## API Response Examples
 
