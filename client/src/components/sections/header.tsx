@@ -44,12 +44,7 @@ export default function Header() {
             >
               Examples
             </button>
-            <button 
-              onClick={() => scrollToSection('status')}
-              className="text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              Status
-            </button>
+
             <Link to="/docs">
               <Button className="bg-blue-500 text-white hover:bg-blue-600 mr-3">
                 <BookOpen className="w-4 h-4 mr-2" />

@@ -5,6 +5,8 @@ import { Link } from "wouter";
 const footerLinks = {
   resources: [
     { name: "API Documentation", href: "/docs" },
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
   ],
   contact: [
     { name: "@Fi_lotbot", href: "https://t.me/Fi_lotbot" },
