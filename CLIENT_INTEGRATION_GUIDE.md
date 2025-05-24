@@ -549,7 +549,7 @@ Access performance metrics and recent request logs.
 
 ---
 
-## 💡 Integration Examples
+## Integration Examples
 
 ### React/Next.js Integration
 
@@ -1032,7 +1032,7 @@ watch -n 5 'curl -s https://filotmicroservice.replit.app/api/health | jq .status
 
 ---
 
-## 📈 Production Best Practices
+## Production Best Practices
 
 ### 1. Connection Management
 ```javascript
@@ -1154,7 +1154,7 @@ class ApiMonitor {
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -1259,9 +1259,9 @@ class DebugApiClient {
     const startTime = Date.now();
     
     if (this.debug) {
-      console.log(`🚀 API Request: ${options.method || 'GET'} ${url}`);
+      console.log(`API Request: ${options.method || 'GET'} ${url}`);
       if (options.body) {
-        console.log(`📤 Request Body:`, JSON.parse(options.body));
+        console.log(`Request Body:`, JSON.parse(options.body));
       }
     }
     
@@ -1280,7 +1280,7 @@ class DebugApiClient {
       this.requestLog.push(logEntry);
       
       if (this.debug) {
-        console.log(`✅ API Response: ${response.status} (${duration}ms)`);
+        console.log(`API Response: ${response.status} (${duration}ms)`);
       }
       
       return response;
@@ -1288,7 +1288,7 @@ class DebugApiClient {
       const duration = Date.now() - startTime;
       
       if (this.debug) {
-        console.error(`❌ API Error: ${error.message} (${duration}ms)`);
+        console.error(`API Error: ${error.message} (${duration}ms)`);
       }
       
       throw error;
@@ -1310,7 +1310,7 @@ const client = new DebugApiClient(true); // Enable debug mode
 
 ---
 
-## 📞 Support & Resources
+## Support & Resources
 
 ### API Status Page
 Monitor real-time API status: `https://filotmicroservice.replit.app/api/health`
@@ -1328,7 +1328,7 @@ Monitor real-time API status: `https://filotmicroservice.replit.app/api/health`
 
 ---
 
-## 📝 License & Terms
+## License & Terms
 
 This API is provided free of charge for development and commercial use. By using this API, you agree to:
 
