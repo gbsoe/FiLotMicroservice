@@ -113,18 +113,16 @@ export default function Footer() {
             © 2024 FiLotMicroservice. Precision Investing API.
           </p>
           <div className="flex space-x-6 mt-4 sm:mt-0">
-            <button className="text-slate-400 hover:text-white text-sm transition-colors">
-              Privacy
-            </button>
-            <button className="text-slate-400 hover:text-white text-sm transition-colors">
-              Terms
-            </button>
-            <button 
-              onClick={() => scrollToSection('#status')}
-              className="text-slate-400 hover:text-white text-sm transition-colors"
-            >
-              Status
-            </button>
+            <Link to="/privacy">
+              <span className="text-slate-400 hover:text-white text-sm transition-colors cursor-pointer">
+                Privacy
+              </span>
+            </Link>
+            <Link to="/terms">
+              <span className="text-slate-400 hover:text-white text-sm transition-colors cursor-pointer">
+                Terms
+              </span>
+            </Link>
           </div>
         </div>
       </div>
