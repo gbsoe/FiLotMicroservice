@@ -27,14 +27,14 @@ export default function Hero() {
           </Badge>
           
           <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-            Raydium SDK v2
-            <span className="text-indigo-500 block">Microservice API</span>
+            FiLotMicroservice
+            <span className="text-indigo-500 block">Precision Investing</span>
           </h1>
           
           <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-            Access Raydium's powerful DeFi capabilities through our RESTful API. 
+            Professional-grade DeFi tools for precision investing. 
             Built with Node.js and Raydium SDK v2, providing seamless access to liquidity pools, 
-            swap calculations, and token data without authentication barriers.
+            swap calculations, and market data for informed trading decisions.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">

@@ -19,8 +19,8 @@ export default function Header() {
               <ArrowRightLeft className="text-white w-4 h-4" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-slate-900">Raydium API</h1>
-              <p className="text-xs text-slate-500">Free Microservice</p>
+              <h1 className="text-xl font-semibold text-slate-900">FiLotMicroservice</h1>
+              <p className="text-xs text-slate-500">Precision Investing</p>
             </div>
           </div>
           

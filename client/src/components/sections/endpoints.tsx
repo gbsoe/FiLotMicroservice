@@ -57,7 +57,7 @@ export default function Endpoints() {
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">API Endpoints</h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            RESTful endpoints for all core Raydium functionality
+            RESTful endpoints for precision investing and DeFi analysis
           </p>
         </div>
         

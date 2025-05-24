@@ -35,11 +35,11 @@ export default function Footer() {
               <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
                 <ArrowRightLeft className="text-white w-4 h-4" />
               </div>
-              <h3 className="text-xl font-semibold">Raydium API</h3>
+              <h3 className="text-xl font-semibold">FiLotMicroservice</h3>
             </div>
             <p className="text-slate-400 mb-6 max-w-md">
-              Free microservice API built with Node.js and Raydium SDK v2. 
-              Providing seamless access to Solana's premier DeFi ecosystem.
+              Professional-grade microservice API for precision investing. 
+              Built with Node.js and Raydium SDK v2 for informed trading decisions.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-slate-400 hover:text-white transition-colors">
@@ -89,7 +89,7 @@ export default function Footer() {
         
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-slate-400 text-sm">
-            © 2024 Raydium API Service. Built with Raydium SDK v2.
+            © 2024 FiLotMicroservice. Precision Investing API.
           </p>
           <div className="flex space-x-6 mt-4 sm:mt-0">
             <button className="text-slate-400 hover:text-white text-sm transition-colors">

@@ -313,8 +313,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get API documentation/routes
   app.get("/api/docs", (req, res) => {
     res.json({
-      title: "Raydium API v2 Microservice",
-      description: "Free access to Raydium SDK v2 functionality",
+      title: "FiLotMicroservice - Precision Investing API",
+      description: "Professional-grade DeFi tools for precision investing",
       version: "1.0.0",
       endpoints: [
         {
