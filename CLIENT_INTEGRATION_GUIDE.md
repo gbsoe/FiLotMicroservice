@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 FiLotMicroservice provides **free**, **no-authentication** access to authentic Raydium SDK v2 functionality for DeFi trading and precision investing.
 
@@ -16,7 +16,7 @@ FiLotMicroservice provides **free**, **no-authentication** access to authentic R
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 1. [API Overview](#api-overview)
 2. [Rate Limits & Usage Guidelines](#rate-limits--usage-guidelines)
@@ -31,15 +31,15 @@ FiLotMicroservice provides **free**, **no-authentication** access to authentic R
 
 ---
 
-## 🎯 API Overview
+## API Overview
 
 ### Features
-- ✅ **Authentic Raydium SDK v2 Integration** - Real-time DeFi data
-- ✅ **Zero Configuration** - No API keys or registration required
-- ✅ **High Performance** - Average response time: 40ms
-- ✅ **100% Uptime** - Reliable service with comprehensive monitoring
-- ✅ **Real-time Data** - Live pools, tokens, and swap calculations
-- ✅ **Multiple Formats** - JSON responses with consistent structure
+- **Authentic Raydium SDK v2 Integration** - Real-time DeFi data
+- **Zero Configuration** - No API keys or registration required
+- **High Performance** - Average response time: 40ms
+- **100% Uptime** - Reliable service with comprehensive monitoring
+- **Real-time Data** - Live pools, tokens, and swap calculations
+- **Multiple Formats** - JSON responses with consistent structure
 
 ### Supported Operations
 - Health monitoring and API status
@@ -51,7 +51,7 @@ FiLotMicroservice provides **free**, **no-authentication** access to authentic R
 
 ---
 
-## ⚡ Rate Limits & Usage Guidelines
+## Rate Limits & Usage Guidelines
 
 ### Current Limits
 - **No rate limits** currently enforced
@@ -70,7 +70,7 @@ curl https://filotmicroservice.replit.app/api/pools
 
 ---
 
-## 📊 Response Format
+## Response Format
 
 ### Standard Response Structure
 All endpoints return JSON with consistent structure:
@@ -96,7 +96,7 @@ All endpoints return JSON with consistent structure:
 
 ---
 
-## 🛠 Error Handling
+## Error Handling
 
 ### HTTP Status Codes
 | Code | Meaning | Action Required |
@@ -350,7 +350,7 @@ class TokenPriceMonitor {
   }
   
   triggerAlert(token, targetPrice) {
-    console.log(`🚨 PRICE ALERT: ${token.symbol} reached $${token.price} (target: $${targetPrice})`);
+    console.log(`PRICE ALERT: ${token.symbol} reached $${token.price} (target: $${targetPrice})`);
     // Implement notification logic (email, webhook, etc.)
   }
 }
