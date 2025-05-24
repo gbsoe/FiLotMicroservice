@@ -1,248 +1,233 @@
-# FiLotMicroservice - Precision Investing API
+# FiLotMicroservice - Swap Transaction API
 
-A production-ready Node.js microservice providing streamlined access to authentic Raydium SDK v2 functionality for DeFi trading and blockchain interactions.
+**Precision Investing**
 
-## Overview
+A robust Node.js microservice providing streamlined access to authentic Raydium SDK v2 functionality for blockchain token swapping and interaction processes.
 
-FiLotMicroservice is a professional-grade API designed for developers and traders requiring reliable access to Solana DeFi protocols. The service integrates directly with Raydium SDK v2 to provide authentic market data, swap calculations, and liquidity pool information without requiring authentication.
+## Features
 
-### Core Features
-
-- **Authentic Raydium SDK v2 Integration** - Direct connection to live DeFi protocols
-- **Real-time Market Data** - Live swap quotes and token pricing via Jupiter API integration
-- **Comprehensive Token Database** - Access to verified tokens including PYUSD, SOL, USDC, and emerging DeFi assets
-- **High-Performance Architecture** - Optimized response times averaging 40ms across all endpoints
-- **Complete API Documentation** - Interactive documentation with multi-language code examples
-- **Production Monitoring** - Real-time health metrics and performance analytics
-- **Zero Authentication** - Public API access for immediate integration
-
-## Technology Stack
-
-- **Backend:** Node.js + Express.js + TypeScript
-- **Frontend:** React + Vite + TailwindCSS
-- **DeFi Integration:** Raydium SDK v2 + Jupiter API
-- **Blockchain:** Solana Web3.js
-- **UI Components:** Shadcn/ui + Radix UI
-- **State Management:** TanStack Query
-
-## Production API Endpoints
-
-**Base URL:** `https://filotmicroservice.replit.app`
-
-| Endpoint | Method | Description | Response Time |
-|----------|--------|-------------|---------------|
-| `/api/health` | GET | Service health and Raydium SDK connection status | <1ms |
-| `/api/pools` | GET | Active Raydium liquidity pools with real TVL data | ~200ms |
-| `/api/pools/:poolId` | GET | Specific pool information by pool identifier | <5ms |
-| `/api/tokens` | GET | Verified token list with authentic metadata | ~180ms |
-| `/api/tokens/:mint` | GET | Token details by mint address | <5ms |
-| `/api/swap/quote` | POST | Real-time swap calculations via Jupiter API | ~150ms |
-| `/api/token-account/parse` | POST | Solana token account data parsing | ~130ms |
-| `/api/metrics` | GET | API performance and usage statistics | <5ms |
-| `/api/docs` | GET | OpenAPI specification and endpoint documentation | <1ms |
+- **Authentic Raydium SDK v2 Integration** - Direct access to Raydium's DeFi protocols
+- **RESTful API Endpoints** - Clean, well-documented endpoints for all swap operations
+- **TypeScript Support** - Full type safety and intellisense
+- **Comprehensive Validation** - Input validation using Zod schemas
+- **Security Hardened** - Rate limiting, CORS, and security headers
+- **Production Ready** - Structured logging, error handling, and health checks
 
 ## Quick Start
 
-### Production Access
+### 1. Environment Setup
 
-**Live API:** `https://filotmicroservice.replit.app`
-**Documentation:** `https://filotmicroservice.replit.app/docs`
+Copy the example environment file and configure your settings:
 
-No installation required. The API is publicly accessible and ready for immediate integration.
-
-### Local Development
-
-**Prerequisites:**
-- Node.js 18+ installed
-- npm package manager
-
-**Setup:**
 ```bash
-git clone <repository-url>
-cd filotmicroservice
+cp .env.example .env
+```
+
+Edit `.env` with your configuration:
+
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Solana Configuration  
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+
+# Private Key (Optional - for execute endpoints)
+PRIVATE_KEY=[123,45,67,89,...]  # JSON array or Base58 string
+
+# Logging
+LOG_LEVEL=info
+```
+
+### 2. Install Dependencies
+
+```bash
 npm install
+```
+
+### 3. Start Development Server
+
+```bash
 npm run dev
 ```
 
-**Local URLs:**
-- API Base: `http://localhost:5000`
-- Documentation: `http://localhost:5000/docs`
+The API will be available at `http://localhost:3000`
 
-## API Usage Examples
+## API Endpoints
 
 ### Health Check
-```bash
-curl -X GET https://filotmicroservice.replit.app/api/health
-```
+- **GET** `/health` - Service health status
 
-### Get Active Liquidity Pools
-```bash
-curl -X GET https://filotmicroservice.replit.app/api/pools
-```
+### Raydium Operations
 
-### Get Verified Token List
-```bash
-curl -X GET https://filotmicroservice.replit.app/api/tokens
-```
+#### Quote Swap
+- **GET** `/api/raydium/quote-swap`
+- Get authentic swap quotes from Raydium pools
+- **Query Parameters:**
+  - `inMint` (string) - Input token mint address
+  - `outMint` (string) - Output token mint address
+  - `amount` (string) - Input amount in base units
+  - `slippagePct` (number, optional) - Slippage percentage (default: 0.5)
 
-### Calculate Swap Quote (SOL to USDC)
-```bash
-curl -X POST https://filotmicroservice.replit.app/api/swap/quote \
-  -H "Content-Type: application/json" \
-  -d '{
-    "inputMint": "So11111111111111111111111111111111111111112",
-    "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-    "amount": "1000000000",
-    "slippage": 0.5
-  }'
-```
-
-### Parse Solana Token Account
-```bash
-curl -X POST https://filotmicroservice.replit.app/api/token-account/parse \
-  -H "Content-Type: application/json" \
-  -d '{
-    "accountData": "base64_encoded_account_data",
-    "owner": "wallet_public_key"
-  }'
-```
-
-## Data Sources and Architecture
-
-### Integration Sources
-- **Raydium SDK v2** - Direct protocol integration for liquidity pools and token data
-- **Jupiter API** - Real-time swap route calculations and market pricing
-- **Solana Web3.js** - Blockchain data access and token account parsing
-- **Public Solana RPC** - Mainnet-beta network connectivity
-
-### Data Integrity
-All data is sourced directly from live blockchain protocols without any synthetic or placeholder information. The service maintains authentic connections to Solana DeFi infrastructure, ensuring accuracy and reliability for production applications.
-
-## API Response Examples
-
-### Health Check Response
-```json
-{
-  "status": "healthy",
-  "timestamp": "2025-05-24T04:03:14.123Z",
-  "version": "1.0.0",
-  "raydium": "connected",
-  "metrics": {
-    "totalRequests": 45,
-    "averageResponseTime": 38.5,
-    "errorRate": 0,
-    "uptime": 100
+#### Build Swap Transaction
+- **POST** `/api/raydium/build-swap`
+- Build unsigned swap transaction for user signing
+- **Body:**
+  ```json
+  {
+    "inMint": "So11111111111111111111111111111111111111112",
+    "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", 
+    "amount": "1000000",
+    "slippagePct": 0.5,
+    "ownerPubkey": "user_wallet_address"
   }
-}
-```
+  ```
 
-### Token List Response
+#### Execute Swap (Requires Private Key)
+- **POST** `/api/raydium/execute-swap`
+- Execute swap using configured private key
+- **Body:**
+  ```json
+  {
+    "inMint": "So11111111111111111111111111111111111111112",
+    "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "amount": "1000000", 
+    "slippagePct": 0.5
+  }
+  ```
+
+#### Transfer Token (Requires Private Key)
+- **POST** `/api/raydium/transfer-token`
+- Transfer SPL tokens between accounts
+- **Body:**
+  ```json
+  {
+    "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "toPubkey": "recipient_wallet_address",
+    "amount": "1000000"
+  }
+  ```
+
+#### Health Check
+- **GET** `/api/raydium/health` - Raydium service status
+
+## Response Format
+
+All endpoints return standardized JSON responses:
+
 ```json
 {
-  "tokens": [
-    {
-      "mint": "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo",
-      "symbol": "PYUSD",
-      "name": "PayPal USD",
-      "decimals": 6,
-      "logoUri": "https://img-v1.raydium.io/icon/2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo.png",
-      "volume24h": null,
-      "price": null,
-      "marketCap": null
-    }
-  ],
-  "count": 1,
-  "updated": "2025-05-24T04:03:14.123Z"
+  "success": true,
+  "data": {
+    // Response data
+  },
+  "timestamp": "2025-05-24T05:11:30.123Z"
 }
 ```
 
-### Swap Quote Response
+Error responses:
+
 ```json
 {
-  "inputMint": "So11111111111111111111111111111111111111112",
-  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  "inputAmount": "1000000000",
-  "outputAmount": "175038000",
-  "priceImpact": "0",
-  "slippage": 0.5,
-  "route": ["Lifinity V2"],
-  "minOutputAmount": "174163000"
+  "success": false,
+  "error": "Error description",
+  "timestamp": "2025-05-24T05:11:30.123Z"
 }
 ```
 
-## Performance Metrics
+## Development
 
-| Metric | Production Value |
-|--------|------------------|
-| Average Response Time | 40ms |
-| Health Check | <1ms |
-| Pool Data Fetch | ~200ms |
-| Swap Calculations | ~150ms |
-| Uptime | 100% |
-| Error Rate | 0% |
+### Project Structure
 
-## Configuration
+```
+src/
+├── index.ts          # Main application entry point
+├── config.ts         # Configuration management
+├── logger.ts         # Winston logging setup
+├── models.ts         # TypeScript interfaces and types
+├── routes/
+│   └── raydium.ts    # Raydium API routes
+└── services/
+    └── raydium.ts    # Raydium SDK integration
+```
 
-### Network Configuration
-- **Blockchain:** Solana Mainnet-beta
-- **RPC Provider:** Public Solana RPC endpoints
-- **Commitment Level:** Confirmed transactions
-- **Connection Pool:** Optimized for concurrent requests
+### Scripts
 
-### API Configuration
-- **Base URL:** `https://filotmicroservice.replit.app`
-- **Protocol:** HTTPS with TLS 1.3
-- **CORS:** Enabled for all origins
-- **Authentication:** Not required
-- **Rate Limiting:** Fair usage policy
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm start` - Start production server
 
-## Integration Patterns
+## Security Notes
 
-### Trading Applications
-Access real-time swap quotes and liquidity data for DeFi trading interfaces, arbitrage detection, and market analysis tools.
+- The execute and transfer endpoints require a `PRIVATE_KEY` environment variable
+- Never expose private keys in production - use secure key management
+- Consider implementing wallet adapters for user transactions
+- Rate limiting is enabled by default (100 requests per 15 minutes)
 
-### Portfolio Management
-Retrieve authentic token information, pool statistics, and account data for comprehensive portfolio tracking applications.
+## Integration Examples
 
-### Analytics Platforms
-Utilize performance metrics, API usage statistics, and historical data access for DeFi analytics and reporting systems.
+### JavaScript/Node.js
 
-### Educational Resources
-Implement live blockchain data in educational applications demonstrating DeFi concepts and Solana ecosystem functionality.
+```javascript
+// Get swap quote
+const response = await fetch('http://localhost:3000/api/raydium/quote-swap?' + 
+  new URLSearchParams({
+    inMint: 'So11111111111111111111111111111111111111112',
+    outMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    amount: '1000000',
+    slippagePct: '0.5'
+  }));
 
-## Production Deployment
+const quote = await response.json();
+console.log('Swap quote:', quote.data);
+```
 
-The API is production-ready and deployed at `https://filotmicroservice.replit.app` with:
+### Python
 
-- **High Availability:** 100% uptime with automatic health monitoring
-- **Performance Optimization:** Sub-second response times for most endpoints
-- **Security:** HTTPS encryption and secure data handling
-- **Scalability:** Designed to handle concurrent requests efficiently
+```python
+import requests
 
-## Technical Specifications
+# Get swap quote
+response = requests.get('http://localhost:3000/api/raydium/quote-swap', params={
+    'inMint': 'So11111111111111111111111111111111111111112',
+    'outMint': 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    'amount': '1000000',
+    'slippagePct': 0.5
+})
 
-### Response Format
-All endpoints return JSON with consistent schema validation using Zod for request/response integrity.
+quote = response.json()
+print('Swap quote:', quote['data'])
+```
 
-### Error Handling
-Comprehensive error responses with HTTP status codes, detailed error messages, and troubleshooting guidance.
+### cURL
 
-### Data Consistency
-Direct integration with live blockchain protocols ensures data accuracy without synthetic or cached information.
+```bash
+# Get swap quote
+curl "http://localhost:3000/api/raydium/quote-swap?inMint=So11111111111111111111111111111111111111112&outMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=1000000&slippagePct=0.5"
 
-## Documentation Resources
+# Execute swap (requires PRIVATE_KEY)
+curl -X POST http://localhost:3000/api/raydium/execute-swap \
+  -H "Content-Type: application/json" \
+  -d '{
+    "inMint": "So11111111111111111111111111111111111111112",
+    "outMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "amount": "1000000",
+    "slippagePct": 0.5
+  }'
+```
 
-- **Production API:** `https://filotmicroservice.replit.app`
-- **Interactive Documentation:** `https://filotmicroservice.replit.app/docs`
-- **Client Integration Guide:** [CLIENT_INTEGRATION_GUIDE.md](./CLIENT_INTEGRATION_GUIDE.md)
-
-## Contact Information
+## Support
 
 - **Telegram:** [@Fi_lotbot](https://t.me/Fi_lotbot)
 - **X (Twitter):** [@crazyrichla](https://x.com/crazyrichla)
 - **Email:** support@filot.io
 - **Location:** Dubai International Financial Centre
 
+## License
+
+MIT License - See LICENSE file for details
+
 ---
 
-**FiLotMicroservice v1.0.0 | Precision Investing API | Authentic Raydium SDK v2 Integration**
+**FiLotMicroservice** - Building the future of decentralized finance with precision and reliability.
